@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.meoscar.app_practice.MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:id="@+id/handler_practice"
+        android:text="refresh text every second."
+        android:gravity="left"
+        android:fontFamily="Roboto Regular"/>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/handler_practice"
+        android:text="isCharging :   " />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_below="@+id/handler_practice"
+        android:textColor="#ffffff"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/goToListExample1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="187dp"
+        android:text="goToListExample1" />
+
+    <Button
+        android:id="@+id/goToListExample2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:text="goToListExample2" />
+
+    <TableLayout
+        android:id="@+id/uiUpdateTestLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/goToListExample2"
+        android:stretchColumns="*">
+        <TableRow>
+            <Button
+                android:id="@+id/uiUpdateTest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="uiUpdateTest" />
+            <Button
+                android:id="@+id/uiUpdateTestReset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="uiUpdateTest - reset" />
+        </TableRow>
+    </TableLayout>
+
+
+    <TextView
+        android:id="@+id/useHandlerUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uiUpdateTestLayout"
+        android:text="useHandlerUpdate : " />
+
+    <TextView
+        android:id="@+id/useUIThreadUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="104dp"
+        android:text="useUIThreadUpdate" />
+    <Button
+        android:id="@+id/gotoTabDemo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/useUIThreadUpdate"
+        android:text="TabDemo" />
+    <Button
+        android:id="@+id/gotoSwipeDemo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gotoTabDemo"
+        android:text="SwipeDemo" />
+</RelativeLayout>

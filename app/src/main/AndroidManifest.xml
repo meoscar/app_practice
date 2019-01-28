@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.meoscar.app_practice">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/MyMaterialTheme" >
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="List of Mobile OS"
+            android:name=".ListMobileActivity" >
+            <!--<intent-filter >-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:label="List of Fruits"
+            android:name=".ListFruitActivity" >
+        </activity>
+
+        <activity
+            android:name=".TabMainActivity"
+            android:label="@string/title_activity_scrollable_tabs"
+            android:parentActivityName="MainActivity" >
+        </activity>
+        <activity
+            android:name=".ScrollableTabsActivity"
+            android:label="@string/title_activity_scrollable_tabs"
+            android:parentActivityName="TabMainActivity" >
+        </activity>
+        <activity
+            android:name=".SimpleTabsActivity"
+            android:label="@string/title_activity_simple_tabs"
+            android:parentActivityName="TabMainActivity" >
+        </activity>
+        <activity
+            android:name=".IconTextTabsActivity"
+            android:label="@string/title_activity_icon_text_tabs"
+            android:parentActivityName="TabMainActivity" >
+        </activity>
+        <activity
+            android:name=".IconTabsActivity"
+            android:label="@string/title_activity_icon_tabs"
+            android:parentActivityName="TabMainActivity" >
+        </activity>
+        <activity
+            android:name=".CustomViewIconTextTabsActivity"
+            android:label="@string/title_activity_custom_view_icon_text_tabs"
+            android:parentActivityName="TabMainActivity" >
+        </activity>
+
+        <activity
+            android:name=".SwipeMainActivity"
+            android:label="@string/title_activity_scrollable_tabs"
+            android:parentActivityName="MainActivity" >
+        </activity>
+
+        <service android:name=".TestService">
+            <intent-filter>
+                <action android:name="meoscar.is.cool" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>
