@@ -1,0 +1,275 @@
+From 4bded4209a712df474b3b473244930f81502ea45 Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Wed, 16 May 2018 11:27:53 +0800
+Subject: [PATCH 08/13] use runOnUiThread vs. use Handler
+
+benefit : if the request is on the main ui thread, the request will be handled immediately.
+
+05-16 11:53:29.555 20229 20229 D app_practice->Main: invoke useHandlerUpdateUI...
+05-16 11:53:29.555 20229 20229 D app_practice->Main: invoke useUIThreadUpdateUI...
+05-16 11:53:29.556 20229 20229 D app_practice->Main: useUIThreadUpdate : got it
+05-16 11:53:29.569 20229 20229 D app_practice->Main: useHandlerUpdate : got it
+
+Detail :
+
+05-16 14:25:45.090  8381  8381 D app_practice->Main: setMessageLogging (input) = >>>>> Dispatching to Handler (android.view.ViewRootImpl$ViewRootHandler) {e8cf025} android.view.View$PerformClick@8f31167: 0
+05-16 14:25:45.092  8381  8381 D app_practice->Main: invoke useHandlerUpdateUI...
+05-16 14:25:45.093  8381  8381 D app_practice->Main: invoke useUIThreadUpdateUI...
+05-16 14:25:45.093  8381  8381 D app_practice->Main: useUIThreadUpdate : got it
+05-16 14:25:45.094  8381  8381 D app_practice->Main: setMessageLogging (input) = <<<<< Finished to Handler (android.view.ViewRootImpl$ViewRootHandler) {e8cf025} android.view.View$PerformClick@8f31167
+05-16 14:25:45.094  8381  8381 D app_practice->Main: setMessageLogging (input) = >>>>> Dispatching to Handler (android.view.ViewRootImpl$ViewRootHandler) {e8cf025} android.view.View$UnsetPressedState@b75fb14: 0
+05-16 14:25:45.097  8381  8381 D app_practice->Main: setMessageLogging (input) = <<<<< Finished to Handler (android.view.ViewRootImpl$ViewRootHandler) {e8cf025} android.view.View$UnsetPressedState@b75fb14
+05-16 14:25:45.097  8381  8381 D app_practice->Main: setMessageLogging (input) = >>>>> Dispatching to Handler (com.meoscar.app_practice.MainActivity$MyUIHandler) {c11c7f} null: 30600
+05-16 14:25:45.097  8381  8381 D app_practice->Main: setMessageLogging :  Dispatching(input) = useHandlerUpdateUI
+05-16 14:25:45.097  8381  8381 D app_practice->Main: useHandlerUpdate : got it
+05-16 14:25:45.097  8381  8381 D app_practice->Main: setMessageLogging (input) = <<<<< Finished to Handler (com.meoscar.app_practice.MainActivity$MyUIHandler) {c11c7f} null
+---
+ .../com/meoscar/app_practice/MainActivity.java     | 119 ++++++++++++++++++---
+ app/src/main/res/layout/activity_main.xml          |  37 ++++++-
+ 2 files changed, 142 insertions(+), 14 deletions(-)
+
+diff --git a/app/src/main/java/com/meoscar/app_practice/MainActivity.java b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+index 6176423..4214a7a 100644
+--- a/app/src/main/java/com/meoscar/app_practice/MainActivity.java
++++ b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
+     private static boolean leaveActivity = false;
+     private static int count = 0;
+ 
+-    private static Button mButton1, mButton2;
++    private static Button mButton1, mButton2, mButton3, mButton4;
+ 
+     private static MyUIHandler handler;
+     private static Looper uiLooper;
+@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
+             MainActivity activity = mActivity.get();
+ 
+             if(msg.what == 0x5566) {
++                //Log.d(TAG, "handleMessage : " + msg.what);
+                 activity.refreshTest();
+             }
+ 
+@@ -56,7 +57,11 @@ public class MainActivity extends AppCompatActivity {
+                 ischanging.setBackgroundColor(Color.RED);
+ 
+             }
+-
++            if(msg.what == 0x7788) {
++                Log.d(TAG, "useHandlerUpdate : got it");
++                TextView useHandlerUpdate = (TextView) activity.findViewById(R.id.useHandlerUpdate);
++                useHandlerUpdate.setText("useHandlerUpdate : got it");
++            }
+         }
+     };
+ 
+@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
+         Intent batteryIntent = getBatteryIntent();
+         int status = batteryIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+         charging = (status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL);
+-        Log.d(TAG, "isCharging : " + charging);
++        //Log.d(TAG, "isCharging : " + charging);
+         return charging;
+     }
+ 
+@@ -92,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
+         }
+         return hex;
+     }
++
+     /*
+     // android.os.Looper.java
+ 
+@@ -151,15 +157,20 @@ public class MainActivity extends AppCompatActivity {
+                         case "5566"://21862
+                             Log.d(TAG, "setMessageLogging :  Dispatching(input) = " + "count++");
+                             break;
++                        case "7788"://30600
++                            Log.d(TAG, "setMessageLogging :  Dispatching(input) = " + "useHandlerUpdateUI");
++                            break;
+                     }
+                 } else if (x.contains(END)){
+-                    Log.d(TAG, "setMessageLogging : Finished = " + "count++");
++                    //Log.d(TAG, "setMessageLogging : Finished = " + "count++");
+                 }
+             }
+         });
+ 
+         mButton1 = (Button) findViewById(R.id.goToListExample1);
+         mButton2 = (Button) findViewById(R.id.goToListExample2);
++        mButton3 = (Button) findViewById(R.id.uiUpdateTest);
++        mButton4 = (Button) findViewById(R.id.uiUpdateTestReset);
+ 
+         mButton1.setOnClickListener(new View.OnClickListener() {
+             @Override
+@@ -178,6 +189,73 @@ public class MainActivity extends AppCompatActivity {
+                 startActivity(intent);
+             }
+         });
++        mButton3.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                Log.d(TAG, "invoke useHandlerUpdateUI...");
++                useHandlerUpdateUI();
++                Log.d(TAG, "invoke useUIThreadUpdateUI...");
++                useUIThreadUpdateUI();
++            }
++        });
++
++        mButton4.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                uiUpdateTestReset();
++            }
++        });
++
++    }
++
++    private void useHandlerUpdateUI(){
++        handler.sendEmptyMessage(0x7788);
++    }
++
++    /**
++
++    Note: what's difference between post and sendMessage?? No difference to me
++
++    public final void runOnUiThread(Runnable action) {
++        if (Thread.currentThread() != mUiThread) {
++            mHandler.post(action);
++        } else {
++            action.run();
++        }
++    }
++
++    public final boolean post(Runnable r) {
++       return  sendMessageDelayed(getPostMessage(r), 0);
++    }
++
++    private static Message getPostMessage(Runnable r) {
++            Message m = Message.obtain();
++            m.callback = r;
++            return m;
++    }
++    */
++    private void useUIThreadUpdateUI(){
++        runOnUiThread(new Runnable() {
++            @Override
++            public void run() {
++                Log.d(TAG, "useUIThreadUpdate : got it");
++                TextView useUIThreadUpdate = (TextView) findViewById(R.id.useUIThreadUpdate);
++                useUIThreadUpdate.setText("useUIThreadUpdate : got it");
++            }
++        });
++    }
++
++    private void uiUpdateTestReset(){
++        runOnUiThread(new Runnable() {
++            @Override
++            public void run() {
++                Log.d(TAG, "uiUpdateTestReset");
++                TextView useUIThreadUpdate = (TextView) findViewById(R.id.useUIThreadUpdate);
++                useUIThreadUpdate.setText("useUIThreadUpdate :");
++                TextView useHandlerUpdate = (TextView) findViewById(R.id.useHandlerUpdate);
++                useHandlerUpdate.setText("useHandlerUpdate :");
++            }
++        });
+     }
+ 
+     @Override
+@@ -190,17 +268,32 @@ public class MainActivity extends AppCompatActivity {
+             public void run() {
+                 Log.d(TAG, "leaveActivity = " + leaveActivity);
+                 while (!leaveActivity) {
+-                    try {
+-                        //deal with :
+-                        count++;
+-                        handler.sendEmptyMessage(0X5566);
+-
+-                        if(isCharging()){
+-                            handler.sendEmptyMessage(0x1234);
+-                        } else {
+-                            handler.sendEmptyMessage(0x1236);
++                    //deal with :
++                    count++;
++                    // Now we start to use runOnUiThread to refresh screen
++                    runOnUiThread(new Runnable() {
++                        @Override
++                        public void run() {
++                            //keep this for setMessagelogger test
++                            handler.sendEmptyMessage(0x5566);
++
++                            //Log.d(TAG, "runOnUiThread");
++                            try {
++                                TextView ischanging = (TextView) findViewById(R.id.textView3);
++                                if(isCharging()){
++                                    ischanging.setText("is charging");
++                                    ischanging.setBackgroundColor(Color.GREEN);
++
++                                } else {
++                                    ischanging.setText("is not charging");
++                                    ischanging.setBackgroundColor(Color.RED);
++                                }
++
++                            } catch (Exception e ) {}
+                         }
++                    });
+ 
++                    try {
+                         Thread.sleep(1000);
+                     } catch (InterruptedException e) {
+                         e.printStackTrace();
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+index 31ec039..62cd6da 100644
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -13,7 +13,6 @@
+         android:id="@+id/handler_practice"
+         android:text="refresh text every second."
+         android:gravity="left"
+-        android:textColor="#000000"
+         android:fontFamily="Roboto Regular"/>
+     <TextView
+         android:id="@+id/textView"
+@@ -43,4 +42,40 @@
+         android:layout_below="@+id/goToListExample1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content" />
++
++    <TableLayout
++        android:id="@+id/uiUpdateTestLayout"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/goToListExample2"
++        android:stretchColumns="*">
++        <TableRow>
++            <Button
++                android:id="@+id/uiUpdateTest"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="uiUpdateTest" />
++            <Button
++                android:id="@+id/uiUpdateTestReset"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="uiUpdateTest - reset" />
++        </TableRow>
++    </TableLayout>
++
++
++    <TextView
++        android:id="@+id/useHandlerUpdate"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/uiUpdateTestLayout"
++        android:text="useHandlerUpdate : " />
++
++    <TextView
++        android:id="@+id/useUIThreadUpdate"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/useHandlerUpdate"
++        android:text="useUIThreadUpdate" />
++
+ </RelativeLayout>
+-- 
+2.14.2
+

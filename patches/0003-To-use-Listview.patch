@@ -1,0 +1,433 @@
+From 0f60ee8fd625caec30457762cd73e12d7705bbff Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Wed, 2 May 2018 11:06:06 +0800
+Subject: [PATCH 03/13] To use Listview
+
+---
+ app/src/main/AndroidManifest.xml                   |  12 +++++
+ .../meoscar/app_practice/ListFruitActivity.java    |  43 ++++++++++++++++++
+ .../meoscar/app_practice/ListMobileActivity.java   |  39 ++++++++++++++++
+ .../com/meoscar/app_practice/MainActivity.java     |  25 +++++++++++
+ .../app_practice/adaptor/MobileArrayAdapter.java   |  49 +++++++++++++++++++++
+ app/src/main/res/drawable-v24/android_logo.jpg     | Bin 0 -> 798 bytes
+ app/src/main/res/drawable-v24/blackberry_logo.jpg  | Bin 0 -> 1136 bytes
+ app/src/main/res/drawable-v24/ios_logo.jpg         | Bin 0 -> 750 bytes
+ .../main/res/drawable-v24/windowsmobile_logo.jpg   | Bin 0 -> 1147 bytes
+ app/src/main/res/layout/activity_main.xml          |  12 +++++
+ app/src/main/res/layout/list_fruit.xml             |   7 +++
+ app/src/main/res/layout/list_mobile.xml            |  25 +++++++++++
+ 12 files changed, 212 insertions(+)
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/ListFruitActivity.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/ListMobileActivity.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/adaptor/MobileArrayAdapter.java
+ create mode 100755 app/src/main/res/drawable-v24/android_logo.jpg
+ create mode 100755 app/src/main/res/drawable-v24/blackberry_logo.jpg
+ create mode 100755 app/src/main/res/drawable-v24/ios_logo.jpg
+ create mode 100755 app/src/main/res/drawable-v24/windowsmobile_logo.jpg
+ create mode 100755 app/src/main/res/layout/list_fruit.xml
+ create mode 100755 app/src/main/res/layout/list_mobile.xml
+
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index ff1146f..84c5e08 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -16,6 +16,18 @@
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
++        <activity
++            android:label="List of Mobile OS"
++            android:name=".ListMobileActivity" >
++            <intent-filter >
++                <action android:name="android.intent.action.MAIN" />
++                <category android:name="android.intent.category.LAUNCHER" />
++            </intent-filter>
++        </activity>
++        <activity
++            android:label="List of Fruits"
++            android:name=".ListFruitActivity" >
++        </activity>
+     </application>
+ 
+ </manifest>
+\ No newline at end of file
+diff --git a/app/src/main/java/com/meoscar/app_practice/ListFruitActivity.java b/app/src/main/java/com/meoscar/app_practice/ListFruitActivity.java
+new file mode 100755
+index 0000000..371a574
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/ListFruitActivity.java
+@@ -0,0 +1,43 @@
++package com.meoscar.app_practice;
++
++import android.app.ListActivity;
++import android.os.Bundle;
++import android.view.View;
++import android.widget.AdapterView;
++import android.widget.ArrayAdapter;
++import android.widget.ListView;
++import android.widget.TextView;
++import android.widget.Toast;
++import android.widget.AdapterView.OnItemClickListener;
++
++public class ListFruitActivity extends ListActivity {
++
++	static final String[] FRUITS = new String[] { "Apple", "Avocado", "Banana",
++			"Blueberry", "Coconut", "Durian", "Guava", "Kiwifruit",
++			"Jackfruit", "Mango", "Olive", "Pear", "Sugar-apple" };
++
++	@Override
++	public void onCreate(Bundle savedInstanceState) {
++		super.onCreate(savedInstanceState);
++
++		// no more this
++		// setContentView(R.layout.list_fruit);
++
++		setListAdapter(new ArrayAdapter<String>(this, R.layout.list_fruit,
++				FRUITS));
++
++		ListView listView = getListView();
++		listView.setTextFilterEnabled(true);
++
++		listView.setOnItemClickListener(new OnItemClickListener() {
++			public void onItemClick(AdapterView<?> parent, View view,
++					int position, long id) {
++				// When clicked, show a toast with the TextView text
++				Toast.makeText(getApplicationContext(),
++						((TextView) view).getText(), Toast.LENGTH_SHORT).show();
++			}
++		});
++
++	}
++
++}
+\ No newline at end of file
+diff --git a/app/src/main/java/com/meoscar/app_practice/ListMobileActivity.java b/app/src/main/java/com/meoscar/app_practice/ListMobileActivity.java
+new file mode 100755
+index 0000000..4c78593
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/ListMobileActivity.java
+@@ -0,0 +1,39 @@
++package com.meoscar.app_practice;
++
++
++import android.app.ListActivity;
++import android.os.Bundle;
++import android.widget.ArrayAdapter;
++import android.widget.ListView;
++import android.widget.Toast;
++import android.view.View;
++
++import com.meoscar.app_practice.adaptor.MobileArrayAdapter;
++
++public class ListMobileActivity extends ListActivity {
++
++	static final String[] MOBILE_OS = new String[] { "Android", "iOS",
++			"WindowsMobile", "Blackberry"};
++
++	@Override
++	public void onCreate(Bundle savedInstanceState) {
++		super.onCreate(savedInstanceState);
++
++		//setListAdapter(new ArrayAdapter<String>(this, R.layout.list_mobile,
++		//		R.id.label, MOBILE_OS));
++		
++		setListAdapter(new MobileArrayAdapter(this, MOBILE_OS));
++		
++
++	}
++
++	@Override
++	protected void onListItemClick(ListView l, View v, int position, long id) {
++
++		//get selected items
++		String selectedValue = (String) getListAdapter().getItem(position);
++		Toast.makeText(this, selectedValue, Toast.LENGTH_SHORT).show();
++
++	}
++
++}
+\ No newline at end of file
+diff --git a/app/src/main/java/com/meoscar/app_practice/MainActivity.java b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+index 21f368f..79cb11d 100644
+--- a/app/src/main/java/com/meoscar/app_practice/MainActivity.java
++++ b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+@@ -9,6 +9,8 @@ import android.os.Message;
+ import android.support.v7.app.AppCompatActivity;
+ import android.os.Bundle;
+ import android.util.Log;
++import android.view.View;
++import android.widget.Button;
+ import android.widget.TextView;
+ 
+ import java.lang.ref.WeakReference;
+@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
+     private static boolean leaveActivity = false;
+     private static int count = 0;
+ 
++    private static Button mButton1, mButton2;
++
+     private static MyUIHandler handler;
+     private static class MyUIHandler extends Handler {
+         private final WeakReference<MainActivity> mActivity;
+@@ -80,6 +84,27 @@ public class MainActivity extends AppCompatActivity {
+         setContentView(R.layout.activity_main);
+ 
+         handler = new MyUIHandler(this);
++
++        mButton1 = (Button) findViewById(R.id.goToListExample1);
++        mButton2 = (Button) findViewById(R.id.goToListExample2);
++
++        mButton1.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                Intent intent = new Intent();
++                intent.setClass(MainActivity.this, ListFruitActivity.class);
++                startActivity(intent);
++            }
++        });
++
++        mButton2.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                Intent intent = new Intent();
++                intent.setClass(MainActivity.this, ListMobileActivity.class);
++                startActivity(intent);
++            }
++        });
+     }
+ 
+     @Override
+diff --git a/app/src/main/java/com/meoscar/app_practice/adaptor/MobileArrayAdapter.java b/app/src/main/java/com/meoscar/app_practice/adaptor/MobileArrayAdapter.java
+new file mode 100755
+index 0000000..98bf328
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/adaptor/MobileArrayAdapter.java
+@@ -0,0 +1,49 @@
++package com.meoscar.app_practice.adaptor;
++
++import android.content.Context;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.ArrayAdapter;
++import android.widget.ImageView;
++import android.widget.TextView;
++
++import com.meoscar.app_practice.R;
++
++public class MobileArrayAdapter extends ArrayAdapter<String> {
++    private final Context context;
++    private final String[] values;
++
++    public MobileArrayAdapter(Context context, String[] values) {
++        super(context, R.layout.list_mobile, values);
++        this.context = context;
++        this.values = values;
++    }
++
++    @Override
++    public View getView(int position, View convertView, ViewGroup parent) {
++        LayoutInflater inflater = (LayoutInflater) context
++                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
++        View rowView = inflater.inflate(R.layout.list_mobile, parent, false);
++        TextView textView = (TextView) rowView.findViewById(R.id.label);
++        ImageView imageView = (ImageView) rowView.findViewById(R.id.logo);
++        textView.setText(values[position]);
++
++        // Change icon based on name
++        String s = values[position];
++
++        System.out.println(s);
++
++        if (s.equals("WindowsMobile")) {
++            imageView.setImageResource(R.drawable.windowsmobile_logo);
++        } else if (s.equals("iOS")) {
++            imageView.setImageResource(R.drawable.ios_logo);
++        } else if (s.equals("Blackberry")) {
++            imageView.setImageResource(R.drawable.blackberry_logo);
++        } else {
++            imageView.setImageResource(R.drawable.android_logo);
++        }
++
++        return rowView;
++    }
++}
+diff --git a/app/src/main/res/drawable-v24/android_logo.jpg b/app/src/main/res/drawable-v24/android_logo.jpg
+new file mode 100755
+index 0000000000000000000000000000000000000000..9bb91f1ffe2c66629e1b76bd20a5e299108cb360
+GIT binary patch
+literal 798
+zcmex=<NpH&0WUXCHwH#V1_nkTWcYuZp@o5yjg6O=pOcTBSC~_fi&u<KK#X5ZfLB;d
+zT3AL@L0(u$PC{B;UP4u0RzyU>T0!4f(@aN4OwQ2Mz|2%lTSt?TlZ%U&n^%&LPtsIX
+zPQ_HyRL9iB6iDdkn3$SqY62-89ZfwTX#!*bnLq)cs3sTyxtjkEFbHxm7%><zGb%AK
+z2{JMZGX6ipAPsaN6En!EaKOsO$jr{f0+cinU|?inU}j-w<%G(D6brHlDYCK|Itq)3
+zDg`EPGzp%#>5z&`P*HJ7W79&QE-4HXfkv>hF@da85M*FtVq#=PvX7C8nMF{MRmjjW
+zQ275X1|DXhc0p!A2788g9D$DcX|@-guDN8Kd$X^EZR<akyIITl@-LWGPOnmIIdPJ6
+z?%6_y4JKVS`T;ikTc6H;$lWLzEBSN=)7=`6P<4+>H*Q^H6N}vuyX#Mw;?%Wf-#Dwc
+zx?fF~58l7K{lL0!B`aie6Zu~1E)G0@HaArE-0|JU4=OiKx31|};1KpY{KxjyuY;Y1
+zZ%%Ou>i4L9cErxcq_1U~&;y-}jHzK|m*%fN9JK4mx!jv-E0-`=&C5Ey_ui@h4Cn5L
+z29<9<{_EY(h|P1oio#9iFDx>=HKV`gKSNj9GUfaBkM^a6++VV9j!=c{a{F7JQ;+NL
+zDV@Ex_KN1(b4NWDj&#mTIS~~-W4he8e9`EG1xM@d-dh{|d*b)~FTZNraGt%(a{uy*
+zX<J;PCN7)fCOc{CnHlU`?>L73-M_)Ji|x&gFP%rGHUC&0>$gXAsz~+5hb2*y*tQkR
+zt@-m;F798>)^mTv3N6x)yxGw<<7}*`$=kW+84<lVtB!k?6kYAjZ#wto&CmHAiEYLT
+z)y$3=DiP|=F=BBMxlTczAHL|joxO9Ts8gj(&!)#vEO^DUvr!opL7Ni3)dVoz(Pl}Q
+kZL<B?EnfBsan~kGi;1|ZK6$Gv>EdeeMM;SPj{e^S00AT!O#lD@
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-v24/blackberry_logo.jpg b/app/src/main/res/drawable-v24/blackberry_logo.jpg
+new file mode 100755
+index 0000000000000000000000000000000000000000..0a20182ef34ae8e8caefaf81dd240da851142c88
+GIT binary patch
+literal 1136
+zcmex=<NpH&0WUXCHwH#V1_nkTWcYuZ!I^=Rjh%y?jgy0&gNuukn^%mVmxqT}T0~Sp
+zOhHyjNkLX#UPZ%1M@7w0U0z<-R@czf+{(&IS=-*l-on|$(#jlU2qPC47cUR56hFU|
+zxvIRXImzJv0R}-11|tR|W=16jCP7AKLB{__7^H!YWMT$67Y<n2S=cxjnSqiP0t}4I
+z%#5teob0R+X+|by76w*9Hg+LlMMLq>OB^Dij)8@ZQx+N}PMoxO<0d61*QA3$ogyeE
+zg7tz#1(EH6h~8r0VFo%ukXewyo?-W#sOVfjorjt%lWLu|9Naorp#JRgr*}VG*|vZF
+zi?gED)A&R>@>u473%DyEq&<I|J-heGo#)HLty$c2Crq0??S(_osa<`^7R;|5OTTSi
+zWc|@z?|s|cH81-9_@CbWaMk8GmkWHaxLIVacKDj@R6c({_3|O_NdHjbp2xOY)iLfj
+zQ(_Hm!>-&Gx7gy6DEMf(#r#{9ax-7g3z1%*ZKb?l_|v-|+1JWeE}B=$yXf1!Pgfg4
+zPIpTFKIzAPZ09S!^QNhXxQ!Ryj4v}j!DqH*C3B_v!ehmO)2x#xeKp~ZUb|9nry-9n
+zOR?vDhUTve-W;f%@h8*4z<}YvQr5!lJMU#~{vN?~aJuTYjc*yI%0G@`JE@eB?{Km@
+z+&0_jx<cFSX%D!ZnA}&}ZSwW0^zu6#=3V3;YW1sq2TT9mP}d95F}m|l-J0xVwa|F^
+zjV|vyu2VL>zH|J`^Lz78Wxw3&^5#$EjQ%CJTAp6Ken}uvW5SeQ-*-NqufQI4;Km+a
+zo!`?fr8b_<d*qyvxN@DUrMjvMQ{4k?{mjiKuB+arRC~L&{Qj82zGRuyhg+986jge9
+zCfSKd7n#ak%r#SS?_VUDxng3Iz<vwvyI#RP?^;tn$!cx6$<24KY%ZHiYyMh2Yt5_j
+zQQJMwKU3PKz3=Y2;I-?Ib*3k2uUoLV_qetuOR_>j@$$(ve0mFa`3DtAbV;$_2wU^-
+zgo!MtS5WhuZTD4Y_gz+UnDimbnAhm^YV}D>Q}-<Xp|$bp%U(&XC}Fu*N6Z{mFR3kb
+zWngSzRFU60xvB2tF)MEOu$;crE8q9ued0S;_WPlV&P-2D6$axoGDS=acQbD&-+KPb
+z9~044CfBCrwl{CzvNCnbwD4m&g`rm_Fj_Y=^ytq&(inL?R)4X4^fK0uGrDpWHQnc^
+z9`Fom2t3v2##FqkGF@F(yXFnw!F$*3FMqha!J5B1=0Ah~VaG79%hQB&CL8gd{Q99>
+zXu?AWzO|V_lP0+9EK%3`{&;QFJU;_(tGLG|J(5P>8Naot)L)e<<4wAI_sib%49_L=
+q<&UkARb2MyrMIxz3_q*azAL@%mrI}0vV7jfxhrT27ZQ^He-i*_(z*ix
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-v24/ios_logo.jpg b/app/src/main/res/drawable-v24/ios_logo.jpg
+new file mode 100755
+index 0000000000000000000000000000000000000000..56b91b4fbd66da1d2bc86a3a8d6fe7c855ae4274
+GIT binary patch
+literal 750
+zcmex=<NpH&0WUXCHwH#V1_nkTWcYuZp@o5yjg3Qym6L;Ah=-q(i<gg2NSKeGkC#V~
+zUtUI3K~zRUPFdYZOIcM}Qbb7GT1VN~)Ivu`RL;=ONXt}BTSt?TlZ%UwhnJV1pI1{t
+zL`jom@c#gVAP0jHgAp^M5(ASUBeNjm|04|23=B-nj3B4N0UHwwD<d;IP*P8Tfr*Kc
+ziJ6^|6DrHd#K6qLDyV4a$R;Fg6qr~zQAAnQDXFM&;YOf(aiBpcMlk@DgKUuz1PU_)
+z*>Fo37?}hU4IKl8{@-HY0g5vTG7B=;GyLv(q87G%eQ@aMzNXVfcgkB!86xyo%X!(J
+zc{Vvr_jT;jl#@9=ihH}C<w^6&eagR8v&3ImUsxf8UD)~hgvU?a<(GXdHL~%(yJFq*
+z<7Q$BS~<yyukUA@{aZY_IrFyru49)9@4Y?S(=e%OW|>a#t*35LpFh4?)O)Di-TQU?
+z-R%PQ&5|KajBx=sj|aCXs)v3y65HdwN#|2Y&+`YokJ?(xAMVfH-{+S3@r{k=ouBRp
+zVjFsXy=DEv^Gf_|s@U=?679>L8D3towsL94@*8Ij=ehkdh@AgYD}K)L+B3^){5HvP
+z&#OMJ@HSnpx%%&1duxXBM+~o$kBXKTUfOtk2SexFxqGv&?cV;uJA4<v!(HVg=k0BD
+zTogGt#R5W_PaJW%+*-BuiushC+8^cB+;%Uuox1kMZavqSy%JUKy;mRH+{${{F-~~(
+zvcAoS=KPIW-?ZiLgV%R&*56dO`o;7uJb3-fM=saD+V#z|nkVZlbZi6DLVvqudEZL&
+zr1&&W=;Ux%Y`oiZ{Mg}hCr<>=T534uo!i~J=Qli-n(E-N`h?Ht-I_uzipGi@PM+sB
+RZ)lm&qNt+C;c5T>CIGmo2vq<8
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-v24/windowsmobile_logo.jpg b/app/src/main/res/drawable-v24/windowsmobile_logo.jpg
+new file mode 100755
+index 0000000000000000000000000000000000000000..d8e468f0547c07b3045eb5501c9bba0104927ca8
+GIT binary patch
+literal 1147
+zcmex=<NpH&0WUXCHwH#V1_nkTWcYuZp@o5yjg5m%kduR*gNu`si&u<~mxqT}L0DEm
+zOkPG&L0(2qPFdYZOIcN4RZdRZT1VelU&q2iQOnlRK;Op5z`%f!lZ%U&n^%&LPtsIH
+zPQ?@zn3)=CnVFhu8S9vu>Y17v>YJMCn3@4e6HOCSBOOgmeVzXY7z8;Oj2MiV8I>5A
+z1R0qH8UG()kODf8nGxhvIACRCXJlpq${7kUFflSSGqJF+utQ`SnV1<^1X+a?*$ml*
+zl^jJxjRM7-8W$=j78Y$h^bn{;0%#PfX$&l^%xpjzWkCi;7Di?kX1F~JK+{+R6_pEx
+z44o#jiYWcR#lXYN2y_~=AcH-_olLI)uD&a!uXPP(JTEiSdZ*Prhil@R=kb%Wx9^+i
+zz^l?KVBPw#LiVh8mS@D-X-_Lorg|)z_<P-<;-;sIOV#GCuWUM2d&#v?CC6;)`TP%A
+zK^tBu?%enzBgQkoROfBc<Eg3KFZ{pTuZ`8w(=V0oHM<tQa&F+BmqyPweLnxXt8>26
+zO6A1jdhe!cZ<*p<7GHg)-wK+#u2^JMeBh7XALY+is?ECWzjSsnPqv<&YO3sUndI!}
+z`!B~$s_4#`{L@-ls>p5K_g=;Cjmxb=G|vfW+Vrpfnb4SUef_@Z{PN;CMs8*Q844fN
+zJqdHaGU=zm@m&6uGgxA(H~weXy4bu!*3`=D(T6iDRSJJ5-MqOZ{iJW_c0E2$7A6b(
+zto}_O`Im2%P@EqU@%G53)0>QiJ+~@PSupj(zSa{m+YD-dtmT?6w7t(S$o<;h6S`)G
+z+Dj)d@@1X1c8|~DskaO~63?p$_g&3>86ENG_Q^}C(oDx>KGi*+zdft9@mJQ3&YZ3D
+zwJaw+3g{P15)<yM?)g>u{^Yl_ekIG+F20+;{nEPSJ5`K-_H(Z~+1#de)M*kwyX@*y
+zVXL#>Syf*5tzDUYSKLWCIOwET(6*DO&aJ;_kaeqV{<_n4V%P3IoOVCY<tC5F<oT!f
+z{@wd(>53oKxtDgOoxU68)^>KCT;$Q6Wr-$gcNt>uPcf>G-FJ2674z`S=~73Rd@Jkf
+zH9pDB@SLG_YQ(<-7eutXbIqQ8ci3^cbiuBvU$?Hgm67fAa+}6emXmD~JnL@A2!!n{
+zyd;qE(dwV-_M2;FmYlxXx}l)vq{{5e?MG7B3OrA|JzBa)=jwz_(J@OB^WFvBiZ`BJ
+z9o7`u>As)eI9>GMg{a+I_da?NRl6l@ZHBy0<dwB2TRe9;752=1#a8)vPJq1BarcaX
+zJH|EVQk#CgyA)loCi`OJiDT*=78d`sg*?AK_#75D=OxQ!{dJ`prq(uTA=9p%^hpXU
+z-XR%Y8F0G!%c|!pv(`rc$X&Ov^GMmZgG>7YWr~_~-H(|Z74IusDZAr*)~pZT7wiA3
+zi+FY=chB-|n|=fv>~IsFd*B_{3O);UJ@2ZH=aU^WM3!o>YI-qx1vLasSpekl|Gx<U
+DERoW3
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+index 07fa538..31ec039 100644
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -31,4 +31,16 @@
+         android:textColor="#ffffff"
+         android:text="TextView" />
+ 
++    <Button
++        android:id="@+id/goToListExample1"
++        android:text="goToListExample1"
++        android:layout_below="@+id/textView"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content" />
++    <Button
++        android:id="@+id/goToListExample2"
++        android:text="goToListExample2"
++        android:layout_below="@+id/goToListExample1"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content" />
+ </RelativeLayout>
+diff --git a/app/src/main/res/layout/list_fruit.xml b/app/src/main/res/layout/list_fruit.xml
+new file mode 100755
+index 0000000..1d5b2da
+--- /dev/null
++++ b/app/src/main/res/layout/list_fruit.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<TextView xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="fill_parent"
++    android:layout_height="fill_parent"
++    android:padding="10dp"
++    android:textSize="20sp" >
++</TextView>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/list_mobile.xml b/app/src/main/res/layout/list_mobile.xml
+new file mode 100755
+index 0000000..f9c896c
+--- /dev/null
++++ b/app/src/main/res/layout/list_mobile.xml
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="wrap_content"
++    android:layout_height="wrap_content"
++    android:padding="5dp" >
++
++    <ImageView
++        android:id="@+id/logo"
++        android:layout_width="50px"
++        android:layout_height="50px"
++        android:layout_marginLeft="5px"
++        android:layout_marginRight="20px"
++        android:layout_marginTop="5px"
++        android:src="@drawable/windowsmobile_logo" >
++    </ImageView>
++
++    <TextView
++        android:id="@+id/label"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@+id/label"
++        android:textSize="30px" >
++    </TextView>
++
++</LinearLayout>
+\ No newline at end of file
+-- 
+2.14.2
+

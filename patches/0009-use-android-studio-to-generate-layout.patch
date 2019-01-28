@@ -1,0 +1,107 @@
+From d14e40c85d4d3ee816ac97b0d6d0861966109636 Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Tue, 22 May 2018 13:05:47 +0800
+Subject: [PATCH 09/13] use android studio to generate layout
+
+---
+ app/src/main/res/layout-land/activity_main.xml | 88 ++++++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
+ create mode 100644 app/src/main/res/layout-land/activity_main.xml
+
+diff --git a/app/src/main/res/layout-land/activity_main.xml b/app/src/main/res/layout-land/activity_main.xml
+new file mode 100644
+index 0000000..5d06e3f
+--- /dev/null
++++ b/app/src/main/res/layout-land/activity_main.xml
+@@ -0,0 +1,88 @@
++<?xml version="1.0" encoding="utf-8"?>
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="com.meoscar.app_practice.MainActivity">
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:visibility="visible"
++        android:id="@+id/handler_practice"
++        android:text="refresh text every second."
++        android:gravity="left"
++        android:fontFamily="Roboto Regular"/>
++    <TextView
++        android:id="@+id/textView"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/handler_practice"
++        android:text="isCharging :   " />
++
++    <TextView
++        android:id="@+id/textView3"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_toRightOf="@+id/textView"
++        android:layout_below="@+id/handler_practice"
++        android:textColor="#ffffff"
++        android:text="TextView" />
++
++    <Button
++        android:id="@+id/goToListExample1"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_alignParentEnd="true"
++        android:layout_alignParentTop="true"
++        android:layout_marginEnd="187dp"
++        android:text="goToListExample1" />
++
++    <Button
++        android:id="@+id/goToListExample2"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_alignParentEnd="true"
++        android:layout_alignParentTop="true"
++        android:text="goToListExample2" />
++
++    <TableLayout
++        android:id="@+id/uiUpdateTestLayout"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/goToListExample2"
++        android:stretchColumns="*">
++        <TableRow>
++            <Button
++                android:id="@+id/uiUpdateTest"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="uiUpdateTest" />
++            <Button
++                android:id="@+id/uiUpdateTestReset"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="uiUpdateTest - reset" />
++        </TableRow>
++    </TableLayout>
++
++
++    <TextView
++        android:id="@+id/useHandlerUpdate"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/uiUpdateTestLayout"
++        android:text="useHandlerUpdate : " />
++
++    <TextView
++        android:id="@+id/useUIThreadUpdate"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_alignParentEnd="true"
++        android:layout_alignParentTop="true"
++        android:layout_marginEnd="20dp"
++        android:layout_marginTop="104dp"
++        android:text="useUIThreadUpdate" />
++
++</RelativeLayout>
+-- 
+2.14.2
+

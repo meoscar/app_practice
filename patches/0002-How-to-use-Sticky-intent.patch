@@ -1,0 +1,132 @@
+From 656f5e82903c8c454b8f95c73b32b86ddeb1a735 Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Tue, 24 Apr 2018 15:42:11 +0800
+Subject: [PATCH 02/13] How to use Sticky intent
+
+---
+ .../com/meoscar/app_practice/MainActivity.java     | 39 ++++++++++++++++++++++
+ app/src/main/res/layout/activity_main.xml          | 28 ++++++++++------
+ 2 files changed, 56 insertions(+), 11 deletions(-)
+
+diff --git a/app/src/main/java/com/meoscar/app_practice/MainActivity.java b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+index 855b06d..21f368f 100644
+--- a/app/src/main/java/com/meoscar/app_practice/MainActivity.java
++++ b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+@@ -1,6 +1,9 @@
+ package com.meoscar.app_practice;
+ 
++import android.content.Intent;
++import android.content.IntentFilter;
+ import android.graphics.Color;
++import android.os.BatteryManager;
+ import android.os.Handler;
+ import android.os.Message;
+ import android.support.v7.app.AppCompatActivity;
+@@ -33,6 +36,19 @@ public class MainActivity extends AppCompatActivity {
+                 activity.refreshTest();
+             }
+ 
++            TextView ischanging = (TextView) activity.findViewById(R.id.textView3);
++
++            if (msg.what == 0x1234) {
++                ischanging.setText("is charging");
++                ischanging.setBackgroundColor(Color.GREEN);
++            }
++
++            if (msg.what == 0x1236) {
++                ischanging.setText("is not charging");
++                ischanging.setBackgroundColor(Color.RED);
++
++            }
++
+         }
+     };
+ 
+@@ -41,6 +57,22 @@ public class MainActivity extends AppCompatActivity {
+         tv.setText("Count : " + count);
+     }
+ 
++    private Intent getBatteryIntent() {
++        Intent batteryIntent;
++        IntentFilter intentfilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
++        batteryIntent = this.registerReceiver(null, intentfilter);
++        return batteryIntent;
++    }
++
++    public boolean isCharging() {
++        boolean charging = false;
++        Intent batteryIntent = getBatteryIntent();
++        int status = batteryIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
++        charging = (status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL);
++        Log.d(TAG, "isCharging : " + charging);
++        return charging;
++    }
++
+     //start +++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -64,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
+                         //deal with :
+                         count++;
+                         handler.sendEmptyMessage(0X5566);
++
++                        if(isCharging()){
++                            handler.sendEmptyMessage(0x1234);
++                        } else {
++                            handler.sendEmptyMessage(0x1236);
++                        }
++
+                         Thread.sleep(1000);
+                     } catch (InterruptedException e) {
+                         e.printStackTrace();
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+index f06cc42..07fa538 100644
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -1,20 +1,11 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     tools:context="com.meoscar.app_practice.MainActivity">
+ 
+-    <TextView
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:text="app_practice"
+-        app:layout_constraintBottom_toBottomOf="parent"
+-        app:layout_constraintLeft_toLeftOf="parent"
+-        app:layout_constraintRight_toRightOf="parent"
+-        app:layout_constraintTop_toTopOf="parent" />
+-
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+@@ -24,5 +15,20 @@
+         android:gravity="left"
+         android:textColor="#000000"
+         android:fontFamily="Roboto Regular"/>
++    <TextView
++        android:id="@+id/textView"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/handler_practice"
++        android:text="isCharging :   " />
++
++    <TextView
++        android:id="@+id/textView3"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_toRightOf="@+id/textView"
++        android:layout_below="@+id/handler_practice"
++        android:textColor="#ffffff"
++        android:text="TextView" />
+ 
+-</android.support.constraint.ConstraintLayout>
++</RelativeLayout>
+-- 
+2.14.2
+

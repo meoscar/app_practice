@@ -1,0 +1,121 @@
+From af48d3149e5932e35f6e197fd6ca30184a09cb18 Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Mon, 14 May 2018 16:57:54 +0800
+Subject: [PATCH 07/13] How to use setMessageLogging()
+
+---
+ .../com/meoscar/app_practice/MainActivity.java     | 73 ++++++++++++++++++++++
+ 1 file changed, 73 insertions(+)
+
+diff --git a/app/src/main/java/com/meoscar/app_practice/MainActivity.java b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+index 79cb11d..6176423 100644
+--- a/app/src/main/java/com/meoscar/app_practice/MainActivity.java
++++ b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+@@ -5,10 +5,12 @@ import android.content.IntentFilter;
+ import android.graphics.Color;
+ import android.os.BatteryManager;
+ import android.os.Handler;
++import android.os.Looper;
+ import android.os.Message;
+ import android.support.v7.app.AppCompatActivity;
+ import android.os.Bundle;
+ import android.util.Log;
++import android.util.Printer;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.TextView;
+@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
+     private static Button mButton1, mButton2;
+ 
+     private static MyUIHandler handler;
++    private static Looper uiLooper;
++
+     private static class MyUIHandler extends Handler {
+         private final WeakReference<MainActivity> mActivity;
+ 
+@@ -77,6 +81,48 @@ public class MainActivity extends AppCompatActivity {
+         return charging;
+     }
+ 
++    public static String Decimal2Hek(int d) {
++        String digits = "0123456789ABCDEF";
++        if (d == 0) return "0";
++        String hex = "";
++        while (d > 0) {
++            int digit = d % 16;
++            hex = digits.charAt(digit) + hex;
++            d = d/16;
++        }
++        return hex;
++    }
++    /*
++    // android.os.Looper.java
++
++    public static void loop() {
++        final Looper me = myLooper();
++        final MessageQueue queue = me.mQueue;
++        ...
++        for (;;) {
++            Message msg = queue.next(); // might block
++            ...
++            // This must be in a local variable, in case a UI event sets the logger
++            final Printer logging = me.mLogging;
++            if (logging != null) {
++                logging.println(">>>>> Dispatching to " + msg.target + " " +
++                        msg.callback + ": " + msg.what);
++            }
++            ...
++            msg.target.dispatchMessage(msg);
++            ...
++            if (logging != null) {
++                logging.println("<<<<< Finished to " + msg.target + " " + msg.callback);
++            }
++            ...
++        }
++    }
++
++    public void setMessageLogging(@Nullable Printer printer) {
++        mLogging = printer;
++    }
++    */
++
+     //start +++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -84,6 +130,33 @@ public class MainActivity extends AppCompatActivity {
+         setContentView(R.layout.activity_main);
+ 
+         handler = new MyUIHandler(this);
++        uiLooper = handler.getLooper();
++        //we can pass the Printer object into the method to crreate customize log.
++        uiLooper.setMessageLogging(new Printer() {
++            @Override
++            public void println(String x) {
++                Log.d(TAG, "setMessageLogging (input) = " + x);
++
++                final String START = ">>>>> Dispatching";
++                final String END = "<<<<< Finished";
++
++                String lastS = "default_msg.type";
++                int lastI = 7533967;
++
++                if (x.contains(START)) {
++                    lastS = x.substring(x.lastIndexOf(" ") + 1 , x.length()); //lastS is the decimal number of the msg.what(Hex)
++                    lastI = Integer.valueOf(lastS);
++                    switch (Decimal2Hek(lastI)) {
++                        //case "1234"://4660
++                        case "5566"://21862
++                            Log.d(TAG, "setMessageLogging :  Dispatching(input) = " + "count++");
++                            break;
++                    }
++                } else if (x.contains(END)){
++                    Log.d(TAG, "setMessageLogging : Finished = " + "count++");
++                }
++            }
++        });
+ 
+         mButton1 = (Button) findViewById(R.id.goToListExample1);
+         mButton2 = (Button) findViewById(R.id.goToListExample2);
+-- 
+2.14.2
+

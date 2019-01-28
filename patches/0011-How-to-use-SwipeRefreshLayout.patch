@@ -1,0 +1,186 @@
+From 09e831cd5689408a3a6c09606ec7bee0da504e9b Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Wed, 6 Jun 2018 12:01:47 +0800
+Subject: [PATCH 11/13] How to use SwipeRefreshLayout
+
+---
+ app/src/main/AndroidManifest.xml                   |  6 ++++
+ .../com/meoscar/app_practice/MainActivity.java     | 13 ++++++--
+ .../meoscar/app_practice/SwipeMainActivity.java    | 39 ++++++++++++++++++++++
+ app/src/main/res/layout-land/activity_main.xml     |  6 ++++
+ app/src/main/res/layout/activity_main.xml          |  6 ++++
+ app/src/main/res/layout/swipe_test.xml             | 23 +++++++++++++
+ 6 files changed, 91 insertions(+), 2 deletions(-)
+ create mode 100644 app/src/main/java/com/meoscar/app_practice/SwipeMainActivity.java
+ create mode 100644 app/src/main/res/layout/swipe_test.xml
+
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index 9132e45..02ca4a3 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -59,6 +59,12 @@
+             android:label="@string/title_activity_custom_view_icon_text_tabs"
+             android:parentActivityName="TabMainActivity" >
+         </activity>
++
++        <activity
++            android:name=".SwipeMainActivity"
++            android:label="@string/title_activity_scrollable_tabs"
++            android:parentActivityName="MainActivity" >
++        </activity>
+     </application>
+ 
+ </manifest>
+\ No newline at end of file
+diff --git a/app/src/main/java/com/meoscar/app_practice/MainActivity.java b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+index d8a6cb7..59bd594 100644
+--- a/app/src/main/java/com/meoscar/app_practice/MainActivity.java
++++ b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+@@ -7,6 +7,7 @@ import android.os.BatteryManager;
+ import android.os.Handler;
+ import android.os.Looper;
+ import android.os.Message;
++import android.support.v4.widget.SwipeRefreshLayout;
+ import android.support.v7.app.AppCompatActivity;
+ import android.os.Bundle;
+ import android.util.Log;
+@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
+     private static boolean leaveActivity = false;
+     private static int count = 0;
+ 
+-    private static Button mButton1, mButton2, mButton3, mButton4, mButton5;
++    private static Button mButton1, mButton2, mButton3, mButton4, mButton5, mButton6;
+ 
+     private static MyUIHandler handler;
+     private static Looper uiLooper;
+@@ -173,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
+         mButton3 = (Button) findViewById(R.id.uiUpdateTest);
+         mButton4 = (Button) findViewById(R.id.uiUpdateTestReset);
+         mButton5 = (Button) findViewById(R.id.gotoTabDemo);
+-
++        mButton6 = (Button) findViewById(R.id.gotoSwipeDemo);
+ 
+         mButton1.setOnClickListener(new View.OnClickListener() {
+             @Override
+@@ -217,6 +218,14 @@ public class MainActivity extends AppCompatActivity {
+                 startActivity(intent);
+             }
+         });
++        mButton6.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                Intent intent = new Intent();
++                intent.setClass(MainActivity.this, SwipeMainActivity.class);
++                startActivity(intent);
++            }
++        });
+     }
+ 
+     private void useHandlerUpdateUI(){
+diff --git a/app/src/main/java/com/meoscar/app_practice/SwipeMainActivity.java b/app/src/main/java/com/meoscar/app_practice/SwipeMainActivity.java
+new file mode 100644
+index 0000000..e773bbe
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/SwipeMainActivity.java
+@@ -0,0 +1,39 @@
++package com.meoscar.app_practice;
++
++import android.graphics.Color;
++import android.os.Bundle;
++import android.support.v4.widget.SwipeRefreshLayout;
++import android.support.v7.app.AppCompatActivity;
++import android.widget.TextView;
++
++public class SwipeMainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
++
++    private SwipeRefreshLayout swipeview;
++    private int refreshCount = 0;
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.swipe_test);
++
++        swipeview = (SwipeRefreshLayout) findViewById(R.id.SwipeRefreshLayout3);
++        swipeview.setOnRefreshListener(this);
++        swipeview.setColorSchemeColors(Color.GRAY, Color.GREEN, Color.BLUE, Color.RED, Color.CYAN);
++        swipeview.setDistanceToTriggerSync(500);//how long the finger has to swipe on the screen to trigger the refreshment
++        swipeview.setSize(SwipeRefreshLayout.DEFAULT);
++
++    }
++
++    @Override
++    public void onRefresh() {
++        swipeview.postDelayed(new Runnable() {
++            @Override
++            public void run() {
++                TextView tv = findViewById(R.id.textView2);
++                refreshCount++;
++                tv.setText("Refresh count = " + refreshCount);
++                swipeview.setRefreshing(false);//dismiss the refresh circle
++            }
++        }, 5000);
++    }
++}
+diff --git a/app/src/main/res/layout-land/activity_main.xml b/app/src/main/res/layout-land/activity_main.xml
+index 5ad7882..4849c01 100644
+--- a/app/src/main/res/layout-land/activity_main.xml
++++ b/app/src/main/res/layout-land/activity_main.xml
+@@ -90,4 +90,10 @@
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/useUIThreadUpdate"
+         android:text="TabDemo" />
++    <Button
++        android:id="@+id/gotoSwipeDemo"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/gotoTabDemo"
++        android:text="SwipeDemo" />
+ </RelativeLayout>
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+index a42beda..4cec6fd 100644
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -97,4 +97,10 @@
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/useUIThreadUpdate"
+         android:text="TabDemo" />
++    <Button
++        android:id="@+id/gotoSwipeDemo"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/gotoTabDemo"
++        android:text="SwipeDemo" />
+ </RelativeLayout>
+diff --git a/app/src/main/res/layout/swipe_test.xml b/app/src/main/res/layout/swipe_test.xml
+new file mode 100644
+index 0000000..ab5b9fd
+--- /dev/null
++++ b/app/src/main/res/layout/swipe_test.xml
+@@ -0,0 +1,23 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent">
++    <android.support.v4.widget.SwipeRefreshLayout
++        android:id="@+id/SwipeRefreshLayout3"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent">
++
++        <ScrollView
++            android:layout_width="match_parent"
++            android:layout_height="match_parent">
++
++            <TextView
++                android:id="@+id/textView2"
++                android:textSize="50sp"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_weight="1"
++                android:text="TextView" />
++        </ScrollView>
++    </android.support.v4.widget.SwipeRefreshLayout>
++</LinearLayout>
+-- 
+2.14.2
+

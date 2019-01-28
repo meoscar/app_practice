@@ -1,0 +1,32 @@
+From 1de71a57346dfde92fa64fedf9fbe4e38f20c243 Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Mon, 28 Jan 2019 11:21:46 +0800
+Subject: [PATCH 13/13] how to change the notification color
+
+---
+ app/src/main/java/com/meoscar/app_practice/TestService.java | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+ mode change 100644 => 100755 app/src/main/java/com/meoscar/app_practice/TestService.java
+
+diff --git a/app/src/main/java/com/meoscar/app_practice/TestService.java b/app/src/main/java/com/meoscar/app_practice/TestService.java
+old mode 100644
+new mode 100755
+index 0ab5e0a..55fa9ac
+--- a/app/src/main/java/com/meoscar/app_practice/TestService.java
++++ b/app/src/main/java/com/meoscar/app_practice/TestService.java
+@@ -44,9 +44,11 @@ public class TestService extends Service {
+         Notification notification = new NotificationCompat.Builder(context)
+                 .setContentIntent(createPendingRadioDialog(context))
+                 .setContentTitle("forground service test")
+-                .setSmallIcon(R.drawable.android_logo)
++                .setSmallIcon(R.drawable.icrt_trans)
+                 .setWhen(System.currentTimeMillis())
+                 .setContentText("")
++                .setColorized(true)
++                .setColor(this.getResources().getColor(R.color.colorAccent))
+                 .build();
+ 
+         notification.flags |= Notification.FLAG_NO_CLEAR;
+-- 
+2.14.2
+

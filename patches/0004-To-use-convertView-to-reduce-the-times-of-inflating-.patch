@@ -1,0 +1,54 @@
+From 490d022bffa7b5f436d7ec924302857d1f7acf7c Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Wed, 2 May 2018 11:12:29 +0800
+Subject: [PATCH 04/13] To use convertView to reduce the times of inflating
+ layout
+
+---
+ .../app_practice/adaptor/MobileArrayAdapter.java      | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/app/src/main/java/com/meoscar/app_practice/adaptor/MobileArrayAdapter.java b/app/src/main/java/com/meoscar/app_practice/adaptor/MobileArrayAdapter.java
+index 98bf328..a2f3d48 100755
+--- a/app/src/main/java/com/meoscar/app_practice/adaptor/MobileArrayAdapter.java
++++ b/app/src/main/java/com/meoscar/app_practice/adaptor/MobileArrayAdapter.java
+@@ -22,18 +22,21 @@ public class MobileArrayAdapter extends ArrayAdapter<String> {
+ 
+     @Override
+     public View getView(int position, View convertView, ViewGroup parent) {
+-        LayoutInflater inflater = (LayoutInflater) context
+-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+-        View rowView = inflater.inflate(R.layout.list_mobile, parent, false);
+-        TextView textView = (TextView) rowView.findViewById(R.id.label);
+-        ImageView imageView = (ImageView) rowView.findViewById(R.id.logo);
++
++        if (convertView == null); {
++            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
++            convertView =  inflater.inflate(R.layout.list_mobile, parent, false);
++        }
++
++        //invoke findViewById every time
++        TextView textView = (TextView) convertView.findViewById(R.id.label);
++        ImageView imageView = (ImageView) convertView.findViewById(R.id.logo);
++
+         textView.setText(values[position]);
+ 
+         // Change icon based on name
+         String s = values[position];
+-
+         System.out.println(s);
+-
+         if (s.equals("WindowsMobile")) {
+             imageView.setImageResource(R.drawable.windowsmobile_logo);
+         } else if (s.equals("iOS")) {
+@@ -44,6 +47,6 @@ public class MobileArrayAdapter extends ArrayAdapter<String> {
+             imageView.setImageResource(R.drawable.android_logo);
+         }
+ 
+-        return rowView;
++        return convertView;
+     }
+ }
+-- 
+2.14.2
+

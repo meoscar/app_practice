@@ -1,0 +1,2085 @@
+From 05bdfebd13b7e79ac77b3266d3c478ace4b485bf Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Tue, 5 Jun 2018 11:34:01 +0800
+Subject: [PATCH 10/13] how to use Tab
+
+---
+ app/build.gradle                                   |   2 +
+ app/src/main/AndroidManifest.xml                   |  33 +++++-
+ .../CustomViewIconTextTabsActivity.java            | 113 +++++++++++++++++++++
+ .../com/meoscar/app_practice/IconTabsActivity.java | 101 ++++++++++++++++++
+ .../meoscar/app_practice/IconTextTabsActivity.java |  89 ++++++++++++++++
+ .../com/meoscar/app_practice/MainActivity.java     |  13 ++-
+ .../app_practice/ScrollableTabsActivity.java       |  91 +++++++++++++++++
+ .../meoscar/app_practice/SimpleTabsActivity.java   |  86 ++++++++++++++++
+ .../com/meoscar/app_practice/TabMainActivity.java  |  58 +++++++++++
+ .../app_practice/fragments/EightFragment.java      |  30 ++++++
+ .../app_practice/fragments/FiveFragment.java       |  30 ++++++
+ .../app_practice/fragments/FourFragment.java       |  30 ++++++
+ .../app_practice/fragments/NineFragment.java       |  30 ++++++
+ .../app_practice/fragments/OneFragment.java        |  30 ++++++
+ .../app_practice/fragments/SevenFragment.java      |  30 ++++++
+ .../app_practice/fragments/SixFragment.java        |  30 ++++++
+ .../app_practice/fragments/TenFragment.java        |  30 ++++++
+ .../app_practice/fragments/ThreeFragment.java      |  30 ++++++
+ .../app_practice/fragments/TwoFragment.java        |  30 ++++++
+ app/src/main/res/drawable-hdpi/ic_tab_call.png     | Bin 0 -> 502 bytes
+ app/src/main/res/drawable-hdpi/ic_tab_contacts.png | Bin 0 -> 605 bytes
+ .../main/res/drawable-hdpi/ic_tab_favourite.png    | Bin 0 -> 515 bytes
+ app/src/main/res/drawable-mdpi/ic_tab_call.png     | Bin 0 -> 362 bytes
+ app/src/main/res/drawable-mdpi/ic_tab_contacts.png | Bin 0 -> 402 bytes
+ .../main/res/drawable-mdpi/ic_tab_favourite.png    | Bin 0 -> 344 bytes
+ app/src/main/res/drawable-xhdpi/ic_tab_call.png    | Bin 0 -> 701 bytes
+ .../main/res/drawable-xhdpi/ic_tab_contacts.png    | Bin 0 -> 873 bytes
+ .../main/res/drawable-xhdpi/ic_tab_favourite.png   | Bin 0 -> 709 bytes
+ app/src/main/res/drawable-xxhdpi/ic_tab_call.png   | Bin 0 -> 1148 bytes
+ .../main/res/drawable-xxhdpi/ic_tab_contacts.png   | Bin 0 -> 1473 bytes
+ .../main/res/drawable-xxhdpi/ic_tab_favourite.png  | Bin 0 -> 1120 bytes
+ app/src/main/res/layout-land/activity_main.xml     |   7 +-
+ .../layout/activity_custom_view_icon_text_tabs.xml |  32 ++++++
+ app/src/main/res/layout/activity_icon_tabs.xml     |  32 ++++++
+ .../main/res/layout/activity_icon_text_tabs.xml    |  32 ++++++
+ app/src/main/res/layout/activity_main.xml          |  21 +++-
+ .../main/res/layout/activity_scrollable_tabs.xml   |  31 ++++++
+ app/src/main/res/layout/activity_simple_tabs.xml   |  32 ++++++
+ app/src/main/res/layout/custom_tab.xml             |   8 ++
+ app/src/main/res/layout/fragment_eight.xml         |  15 +++
+ app/src/main/res/layout/fragment_five.xml          |  15 +++
+ app/src/main/res/layout/fragment_four.xml          |  15 +++
+ app/src/main/res/layout/fragment_list.xml          |  12 +++
+ app/src/main/res/layout/fragment_nine.xml          |  15 +++
+ app/src/main/res/layout/fragment_one.xml           |  15 +++
+ app/src/main/res/layout/fragment_seven.xml         |  15 +++
+ app/src/main/res/layout/fragment_six.xml           |  15 +++
+ app/src/main/res/layout/fragment_ten.xml           |  15 +++
+ app/src/main/res/layout/fragment_three.xml         |  15 +++
+ app/src/main/res/layout/fragment_two.xml           |  15 +++
+ app/src/main/res/layout/tab_main_layout.xml        |  64 ++++++++++++
+ app/src/main/res/values/dimens.xml                 |   9 ++
+ app/src/main/res/values/fonts.xml                  |   4 +
+ app/src/main/res/values/strings.xml                |  23 +++++
+ app/src/main/res/values/styles.xml                 |  10 ++
+ 55 files changed, 1349 insertions(+), 4 deletions(-)
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/CustomViewIconTextTabsActivity.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/IconTabsActivity.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/IconTextTabsActivity.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/ScrollableTabsActivity.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/SimpleTabsActivity.java
+ create mode 100644 app/src/main/java/com/meoscar/app_practice/TabMainActivity.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/fragments/EightFragment.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/fragments/FiveFragment.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/fragments/FourFragment.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/fragments/NineFragment.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/fragments/OneFragment.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/fragments/SevenFragment.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/fragments/SixFragment.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/fragments/TenFragment.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/fragments/ThreeFragment.java
+ create mode 100755 app/src/main/java/com/meoscar/app_practice/fragments/TwoFragment.java
+ create mode 100755 app/src/main/res/drawable-hdpi/ic_tab_call.png
+ create mode 100755 app/src/main/res/drawable-hdpi/ic_tab_contacts.png
+ create mode 100755 app/src/main/res/drawable-hdpi/ic_tab_favourite.png
+ create mode 100755 app/src/main/res/drawable-mdpi/ic_tab_call.png
+ create mode 100755 app/src/main/res/drawable-mdpi/ic_tab_contacts.png
+ create mode 100755 app/src/main/res/drawable-mdpi/ic_tab_favourite.png
+ create mode 100755 app/src/main/res/drawable-xhdpi/ic_tab_call.png
+ create mode 100755 app/src/main/res/drawable-xhdpi/ic_tab_contacts.png
+ create mode 100755 app/src/main/res/drawable-xhdpi/ic_tab_favourite.png
+ create mode 100755 app/src/main/res/drawable-xxhdpi/ic_tab_call.png
+ create mode 100755 app/src/main/res/drawable-xxhdpi/ic_tab_contacts.png
+ create mode 100755 app/src/main/res/drawable-xxhdpi/ic_tab_favourite.png
+ create mode 100755 app/src/main/res/layout/activity_custom_view_icon_text_tabs.xml
+ create mode 100755 app/src/main/res/layout/activity_icon_tabs.xml
+ create mode 100755 app/src/main/res/layout/activity_icon_text_tabs.xml
+ create mode 100755 app/src/main/res/layout/activity_scrollable_tabs.xml
+ create mode 100755 app/src/main/res/layout/activity_simple_tabs.xml
+ create mode 100755 app/src/main/res/layout/custom_tab.xml
+ create mode 100755 app/src/main/res/layout/fragment_eight.xml
+ create mode 100755 app/src/main/res/layout/fragment_five.xml
+ create mode 100755 app/src/main/res/layout/fragment_four.xml
+ create mode 100755 app/src/main/res/layout/fragment_list.xml
+ create mode 100755 app/src/main/res/layout/fragment_nine.xml
+ create mode 100755 app/src/main/res/layout/fragment_one.xml
+ create mode 100755 app/src/main/res/layout/fragment_seven.xml
+ create mode 100755 app/src/main/res/layout/fragment_six.xml
+ create mode 100755 app/src/main/res/layout/fragment_ten.xml
+ create mode 100755 app/src/main/res/layout/fragment_three.xml
+ create mode 100755 app/src/main/res/layout/fragment_two.xml
+ create mode 100644 app/src/main/res/layout/tab_main_layout.xml
+ create mode 100755 app/src/main/res/values/dimens.xml
+ create mode 100755 app/src/main/res/values/fonts.xml
+
+diff --git a/app/build.gradle b/app/build.gradle
+index 1dfc978..5a09f81 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -21,8 +21,10 @@ android {
+ dependencies {
+     implementation fileTree(dir: 'libs', include: ['*.jar'])
+     implementation 'com.android.support:appcompat-v7:26.1.0'
++    implementation 'com.android.support:design:26.1.0'
+     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+     testImplementation 'junit:junit:4.12'
+     androidTestImplementation 'com.android.support.test:runner:1.0.1'
+     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
++
+ }
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index 3ac0319..9132e45 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -8,7 +8,7 @@
+         android:label="@string/app_name"
+         android:roundIcon="@mipmap/ic_launcher_round"
+         android:supportsRtl="true"
+-        android:theme="@style/AppTheme">
++        android:theme="@style/MyMaterialTheme" >
+         <activity android:name=".MainActivity">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+@@ -28,6 +28,37 @@
+             android:label="List of Fruits"
+             android:name=".ListFruitActivity" >
+         </activity>
++
++        <activity
++            android:name=".TabMainActivity"
++            android:label="@string/title_activity_scrollable_tabs"
++            android:parentActivityName="MainActivity" >
++        </activity>
++        <activity
++            android:name=".ScrollableTabsActivity"
++            android:label="@string/title_activity_scrollable_tabs"
++            android:parentActivityName="TabMainActivity" >
++        </activity>
++        <activity
++            android:name=".SimpleTabsActivity"
++            android:label="@string/title_activity_simple_tabs"
++            android:parentActivityName="TabMainActivity" >
++        </activity>
++        <activity
++            android:name=".IconTextTabsActivity"
++            android:label="@string/title_activity_icon_text_tabs"
++            android:parentActivityName="TabMainActivity" >
++        </activity>
++        <activity
++            android:name=".IconTabsActivity"
++            android:label="@string/title_activity_icon_tabs"
++            android:parentActivityName="TabMainActivity" >
++        </activity>
++        <activity
++            android:name=".CustomViewIconTextTabsActivity"
++            android:label="@string/title_activity_custom_view_icon_text_tabs"
++            android:parentActivityName="TabMainActivity" >
++        </activity>
+     </application>
+ 
+ </manifest>
+\ No newline at end of file
+diff --git a/app/src/main/java/com/meoscar/app_practice/CustomViewIconTextTabsActivity.java b/app/src/main/java/com/meoscar/app_practice/CustomViewIconTextTabsActivity.java
+new file mode 100755
+index 0000000..239d55e
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/CustomViewIconTextTabsActivity.java
+@@ -0,0 +1,113 @@
++package com.meoscar.app_practice;
++
++import android.os.Bundle;
++import android.support.design.widget.TabLayout;
++import android.support.v4.app.Fragment;
++import android.support.v4.app.FragmentManager;
++import android.support.v4.app.FragmentPagerAdapter;
++import android.support.v4.view.ViewPager;
++import android.support.v7.app.AppCompatActivity;
++import android.support.v7.widget.Toolbar;
++import android.view.LayoutInflater;
++import android.widget.TextView;
++
++import java.util.ArrayList;
++import java.util.List;
++
++import com.meoscar.app_practice.fragments.EightFragment;
++import com.meoscar.app_practice.fragments.FiveFragment;
++import com.meoscar.app_practice.fragments.FourFragment;
++import com.meoscar.app_practice.fragments.NineFragment;
++import com.meoscar.app_practice.fragments.OneFragment;
++import com.meoscar.app_practice.fragments.SevenFragment;
++import com.meoscar.app_practice.fragments.SixFragment;
++import com.meoscar.app_practice.fragments.TenFragment;
++import com.meoscar.app_practice.fragments.ThreeFragment;
++import com.meoscar.app_practice.fragments.TwoFragment;
++
++
++public class CustomViewIconTextTabsActivity extends AppCompatActivity {
++
++    private Toolbar toolbar;
++    private TabLayout tabLayout;
++    private ViewPager viewPager;
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_custom_view_icon_text_tabs);
++
++        toolbar = (Toolbar) findViewById(R.id.toolbar);
++        setSupportActionBar(toolbar);
++        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
++
++        viewPager = (ViewPager) findViewById(R.id.viewpager);
++        setupViewPager(viewPager);
++
++        tabLayout = (TabLayout) findViewById(R.id.tabs);
++        tabLayout.setupWithViewPager(viewPager);
++        setupTabIcons();
++    }
++
++    /**
++     * Adding custom view to tab
++     */
++    private void setupTabIcons() {
++
++        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
++        tabOne.setText("ONE");
++        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_favourite, 0, 0);
++        tabLayout.getTabAt(0).setCustomView(tabOne);
++
++        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
++        tabTwo.setText("TWO");
++        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_call, 0, 0);
++        tabLayout.getTabAt(1).setCustomView(tabTwo);
++
++        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
++        tabThree.setText("THREE");
++        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_contacts, 0, 0);
++        tabLayout.getTabAt(2).setCustomView(tabThree);
++    }
++
++    /**
++     * Adding fragments to ViewPager
++     * @param viewPager
++     */
++    private void setupViewPager(ViewPager viewPager) {
++        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
++        adapter.addFrag(new OneFragment(), "ONE");
++        adapter.addFrag(new TwoFragment(), "TWO");
++        adapter.addFrag(new ThreeFragment(), "THREE");
++        viewPager.setAdapter(adapter);
++    }
++
++    class ViewPagerAdapter extends FragmentPagerAdapter {
++        private final List<Fragment> mFragmentList = new ArrayList<>();
++        private final List<String> mFragmentTitleList = new ArrayList<>();
++
++        public ViewPagerAdapter(FragmentManager manager) {
++            super(manager);
++        }
++
++        @Override
++        public Fragment getItem(int position) {
++            return mFragmentList.get(position);
++        }
++
++        @Override
++        public int getCount() {
++            return mFragmentList.size();
++        }
++
++        public void addFrag(Fragment fragment, String title) {
++            mFragmentList.add(fragment);
++            mFragmentTitleList.add(title);
++        }
++
++        @Override
++        public CharSequence getPageTitle(int position) {
++            return mFragmentTitleList.get(position);
++        }
++    }
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/IconTabsActivity.java b/app/src/main/java/com/meoscar/app_practice/IconTabsActivity.java
+new file mode 100755
+index 0000000..c465f44
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/IconTabsActivity.java
+@@ -0,0 +1,101 @@
++package com.meoscar.app_practice;
++
++import android.os.Bundle;
++import android.support.design.widget.TabLayout;
++import android.support.v4.app.Fragment;
++import android.support.v4.app.FragmentManager;
++import android.support.v4.app.FragmentPagerAdapter;
++import android.support.v4.view.ViewPager;
++import android.support.v7.app.AppCompatActivity;
++import android.support.v7.widget.Toolbar;
++
++import java.util.ArrayList;
++import java.util.List;
++
++import com.meoscar.app_practice.fragments.EightFragment;
++import com.meoscar.app_practice.fragments.FiveFragment;
++import com.meoscar.app_practice.fragments.FourFragment;
++import com.meoscar.app_practice.fragments.NineFragment;
++import com.meoscar.app_practice.fragments.OneFragment;
++import com.meoscar.app_practice.fragments.SevenFragment;
++import com.meoscar.app_practice.fragments.SixFragment;
++import com.meoscar.app_practice.fragments.TenFragment;
++import com.meoscar.app_practice.fragments.ThreeFragment;
++import com.meoscar.app_practice.fragments.TwoFragment;
++
++
++public class IconTabsActivity extends AppCompatActivity {
++
++    private Toolbar toolbar;
++    private TabLayout tabLayout;
++    private ViewPager viewPager;
++
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_icon_tabs);
++
++        toolbar = (Toolbar) findViewById(R.id.toolbar);
++        setSupportActionBar(toolbar);
++        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
++
++        viewPager = (ViewPager) findViewById(R.id.viewpager);
++        setupViewPager(viewPager);
++
++        tabLayout = (TabLayout) findViewById(R.id.tabs);
++        tabLayout.setupWithViewPager(viewPager);
++        setupTabIcons();
++    }
++
++    private void setupTabIcons() {
++        int[] tabIcons = {
++                R.drawable.ic_tab_favourite,
++                R.drawable.ic_tab_call,
++                R.drawable.ic_tab_contacts
++        };
++
++        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
++        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
++        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
++    }
++
++    private void setupViewPager(ViewPager viewPager) {
++        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
++        adapter.addFrag(new OneFragment(), "ONE");
++        adapter.addFrag(new TwoFragment(), "TWO");
++        adapter.addFrag(new ThreeFragment(), "THREE");
++        viewPager.setAdapter(adapter);
++    }
++
++    class ViewPagerAdapter extends FragmentPagerAdapter {
++        private final List<Fragment> mFragmentList = new ArrayList<>();
++        private final List<String> mFragmentTitleList = new ArrayList<>();
++
++        public ViewPagerAdapter(FragmentManager manager) {
++            super(manager);
++        }
++
++        @Override
++        public Fragment getItem(int position) {
++            return mFragmentList.get(position);
++        }
++
++        @Override
++        public int getCount() {
++            return mFragmentList.size();
++        }
++
++        public void addFrag(Fragment fragment, String title) {
++            mFragmentList.add(fragment);
++            mFragmentTitleList.add(title);
++        }
++
++        @Override
++        public CharSequence getPageTitle(int position) {
++
++            // return null to display only the icon
++            return null;
++        }
++    }
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/IconTextTabsActivity.java b/app/src/main/java/com/meoscar/app_practice/IconTextTabsActivity.java
+new file mode 100755
+index 0000000..a17da3b
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/IconTextTabsActivity.java
+@@ -0,0 +1,89 @@
++package com.meoscar.app_practice;
++
++import android.os.Bundle;
++import android.support.design.widget.TabLayout;
++import android.support.v4.app.Fragment;
++import android.support.v4.app.FragmentManager;
++import android.support.v4.app.FragmentPagerAdapter;
++import android.support.v4.view.ViewPager;
++import android.support.v7.app.AppCompatActivity;
++import android.support.v7.widget.Toolbar;
++
++import java.util.ArrayList;
++import java.util.List;
++
++import com.meoscar.app_practice.fragments.OneFragment;
++import com.meoscar.app_practice.fragments.ThreeFragment;
++import com.meoscar.app_practice.fragments.TwoFragment;
++
++public class IconTextTabsActivity extends AppCompatActivity {
++
++    private Toolbar toolbar;
++    private TabLayout tabLayout;
++    private ViewPager viewPager;
++    private int[] tabIcons = {
++            R.drawable.ic_tab_favourite,
++            R.drawable.ic_tab_call,
++            R.drawable.ic_tab_contacts
++    };
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_icon_text_tabs);
++
++        toolbar = (Toolbar) findViewById(R.id.toolbar);
++        setSupportActionBar(toolbar);
++        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
++
++        viewPager = (ViewPager) findViewById(R.id.viewpager);
++        setupViewPager(viewPager);
++
++        tabLayout = (TabLayout) findViewById(R.id.tabs);
++        tabLayout.setupWithViewPager(viewPager);
++        setupTabIcons();
++    }
++
++    private void setupTabIcons() {
++        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
++        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
++        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
++    }
++
++    private void setupViewPager(ViewPager viewPager) {
++        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
++        adapter.addFrag(new OneFragment(), "ONE");
++        adapter.addFrag(new TwoFragment(), "TWO");
++        adapter.addFrag(new ThreeFragment(), "THREE");
++        viewPager.setAdapter(adapter);
++    }
++
++    class ViewPagerAdapter extends FragmentPagerAdapter {
++        private final List<Fragment> mFragmentList = new ArrayList<>();
++        private final List<String> mFragmentTitleList = new ArrayList<>();
++
++        public ViewPagerAdapter(FragmentManager manager) {
++            super(manager);
++        }
++
++        @Override
++        public Fragment getItem(int position) {
++            return mFragmentList.get(position);
++        }
++
++        @Override
++        public int getCount() {
++            return mFragmentList.size();
++        }
++
++        public void addFrag(Fragment fragment, String title) {
++            mFragmentList.add(fragment);
++            mFragmentTitleList.add(title);
++        }
++
++        @Override
++        public CharSequence getPageTitle(int position) {
++            return mFragmentTitleList.get(position);
++        }
++    }
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/MainActivity.java b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+index 4214a7a..d8a6cb7 100644
+--- a/app/src/main/java/com/meoscar/app_practice/MainActivity.java
++++ b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
+     private static boolean leaveActivity = false;
+     private static int count = 0;
+ 
+-    private static Button mButton1, mButton2, mButton3, mButton4;
++    private static Button mButton1, mButton2, mButton3, mButton4, mButton5;
+ 
+     private static MyUIHandler handler;
+     private static Looper uiLooper;
+@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_main);
+ 
++
+         handler = new MyUIHandler(this);
+         uiLooper = handler.getLooper();
+         //we can pass the Printer object into the method to crreate customize log.
+@@ -171,6 +172,8 @@ public class MainActivity extends AppCompatActivity {
+         mButton2 = (Button) findViewById(R.id.goToListExample2);
+         mButton3 = (Button) findViewById(R.id.uiUpdateTest);
+         mButton4 = (Button) findViewById(R.id.uiUpdateTestReset);
++        mButton5 = (Button) findViewById(R.id.gotoTabDemo);
++
+ 
+         mButton1.setOnClickListener(new View.OnClickListener() {
+             @Override
+@@ -206,6 +209,14 @@ public class MainActivity extends AppCompatActivity {
+             }
+         });
+ 
++        mButton5.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                Intent intent = new Intent();
++                intent.setClass(MainActivity.this, TabMainActivity.class);
++                startActivity(intent);
++            }
++        });
+     }
+ 
+     private void useHandlerUpdateUI(){
+diff --git a/app/src/main/java/com/meoscar/app_practice/ScrollableTabsActivity.java b/app/src/main/java/com/meoscar/app_practice/ScrollableTabsActivity.java
+new file mode 100755
+index 0000000..97a2282
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/ScrollableTabsActivity.java
+@@ -0,0 +1,91 @@
++package com.meoscar.app_practice;
++
++import android.os.Bundle;
++import android.support.design.widget.TabLayout;
++import android.support.v4.app.Fragment;
++import android.support.v4.app.FragmentManager;
++import android.support.v4.app.FragmentPagerAdapter;
++import android.support.v4.view.ViewPager;
++import android.support.v7.app.AppCompatActivity;
++import android.support.v7.widget.Toolbar;
++
++import java.util.ArrayList;
++import java.util.List;
++
++import com.meoscar.app_practice.fragments.EightFragment;
++import com.meoscar.app_practice.fragments.FiveFragment;
++import com.meoscar.app_practice.fragments.FourFragment;
++import com.meoscar.app_practice.fragments.NineFragment;
++import com.meoscar.app_practice.fragments.OneFragment;
++import com.meoscar.app_practice.fragments.SevenFragment;
++import com.meoscar.app_practice.fragments.SixFragment;
++import com.meoscar.app_practice.fragments.TenFragment;
++import com.meoscar.app_practice.fragments.ThreeFragment;
++import com.meoscar.app_practice.fragments.TwoFragment;
++
++public class ScrollableTabsActivity extends AppCompatActivity {
++
++    private Toolbar toolbar;
++    private TabLayout tabLayout;
++    private ViewPager viewPager;
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_scrollable_tabs);
++
++        toolbar = (Toolbar) findViewById(R.id.toolbar);
++        setSupportActionBar(toolbar);
++        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
++
++        viewPager = (ViewPager) findViewById(R.id.viewpager);
++        setupViewPager(viewPager);
++
++        tabLayout = (TabLayout) findViewById(R.id.tabs);
++        tabLayout.setupWithViewPager(viewPager);
++    }
++
++    private void setupViewPager(ViewPager viewPager) {
++        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
++        adapter.addFrag(new OneFragment(), "ONE");
++        adapter.addFrag(new TwoFragment(), "TWO");
++        adapter.addFrag(new ThreeFragment(), "THREE");
++        adapter.addFrag(new FourFragment(), "FOUR");
++        adapter.addFrag(new FiveFragment(), "FIVE");
++        adapter.addFrag(new SixFragment(), "SIX");
++        adapter.addFrag(new SevenFragment(), "SEVEN");
++        adapter.addFrag(new EightFragment(), "EIGHT");
++        adapter.addFrag(new NineFragment(), "NINE");
++        adapter.addFrag(new TenFragment(), "TEN");
++        viewPager.setAdapter(adapter);
++    }
++
++    class ViewPagerAdapter extends FragmentPagerAdapter {
++        private final List<Fragment> mFragmentList = new ArrayList<>();
++        private final List<String> mFragmentTitleList = new ArrayList<>();
++
++        public ViewPagerAdapter(FragmentManager manager) {
++            super(manager);
++        }
++
++        @Override
++        public Fragment getItem(int position) {
++            return mFragmentList.get(position);
++        }
++
++        @Override
++        public int getCount() {
++            return mFragmentList.size();
++        }
++
++        public void addFrag(Fragment fragment, String title) {
++            mFragmentList.add(fragment);
++            mFragmentTitleList.add(title);
++        }
++
++        @Override
++        public CharSequence getPageTitle(int position) {
++            return mFragmentTitleList.get(position);
++        }
++    }
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/SimpleTabsActivity.java b/app/src/main/java/com/meoscar/app_practice/SimpleTabsActivity.java
+new file mode 100755
+index 0000000..3ffdbb1
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/SimpleTabsActivity.java
+@@ -0,0 +1,86 @@
++package com.meoscar.app_practice;
++
++import android.os.Bundle;
++import android.support.design.widget.TabLayout;
++import android.support.v4.app.Fragment;
++import android.support.v4.app.FragmentManager;
++import android.support.v4.app.FragmentPagerAdapter;
++import android.support.v4.view.ViewPager;
++import android.support.v7.app.AppCompatActivity;
++import android.support.v7.widget.Toolbar;
++
++import java.util.ArrayList;
++import java.util.List;
++
++import com.meoscar.app_practice.fragments.EightFragment;
++import com.meoscar.app_practice.fragments.FiveFragment;
++import com.meoscar.app_practice.fragments.FourFragment;
++import com.meoscar.app_practice.fragments.NineFragment;
++import com.meoscar.app_practice.fragments.OneFragment;
++import com.meoscar.app_practice.fragments.SevenFragment;
++import com.meoscar.app_practice.fragments.SixFragment;
++import com.meoscar.app_practice.fragments.TenFragment;
++import com.meoscar.app_practice.fragments.ThreeFragment;
++import com.meoscar.app_practice.fragments.TwoFragment;
++
++
++public class SimpleTabsActivity extends AppCompatActivity {
++
++    private Toolbar toolbar;
++    private TabLayout tabLayout;
++    private ViewPager viewPager;
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_simple_tabs);
++
++        toolbar = (Toolbar) findViewById(R.id.toolbar);
++        setSupportActionBar(toolbar);
++
++        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
++
++        viewPager = (ViewPager) findViewById(R.id.viewpager);
++        setupViewPager(viewPager);
++
++        tabLayout = (TabLayout) findViewById(R.id.tabs);
++        tabLayout.setupWithViewPager(viewPager);
++    }
++
++    private void setupViewPager(ViewPager viewPager) {
++        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
++        adapter.addFragment(new OneFragment(), "ONE");
++        adapter.addFragment(new TwoFragment(), "TWO");
++        adapter.addFragment(new ThreeFragment(), "THREE");
++        viewPager.setAdapter(adapter);
++    }
++
++    class ViewPagerAdapter extends FragmentPagerAdapter {
++        private final List<Fragment> mFragmentList = new ArrayList<>();
++        private final List<String> mFragmentTitleList = new ArrayList<>();
++
++        public ViewPagerAdapter(FragmentManager manager) {
++            super(manager);
++        }
++
++        @Override
++        public Fragment getItem(int position) {
++            return mFragmentList.get(position);
++        }
++
++        @Override
++        public int getCount() {
++            return mFragmentList.size();
++        }
++
++        public void addFragment(Fragment fragment, String title) {
++            mFragmentList.add(fragment);
++            mFragmentTitleList.add(title);
++        }
++
++        @Override
++        public CharSequence getPageTitle(int position) {
++            return mFragmentTitleList.get(position);
++        }
++    }
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/TabMainActivity.java b/app/src/main/java/com/meoscar/app_practice/TabMainActivity.java
+new file mode 100644
+index 0000000..4157144
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/TabMainActivity.java
+@@ -0,0 +1,58 @@
++package com.meoscar.app_practice;
++
++import android.content.Intent;
++import android.os.Bundle;
++import android.support.v7.app.AppCompatActivity;
++import android.support.v7.widget.Toolbar;
++import android.view.View;
++import android.widget.Button;
++
++import com.meoscar.app_practice.R;
++
++public class TabMainActivity extends AppCompatActivity implements View.OnClickListener {
++
++    private Toolbar toolbar;
++    private Button btnSimpleTabs, btnScrollableTabs, btnIconTextTabs, btnIconTabs, btnCustomIconTextTabs;
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.tab_main_layout);
++        toolbar = (Toolbar) findViewById(R.id.toolbar);
++        setSupportActionBar(toolbar);
++
++        btnSimpleTabs = (Button) findViewById(R.id.btnSimpleTabs);
++        btnScrollableTabs = (Button) findViewById(R.id.btnScrollableTabs);
++        btnIconTextTabs = (Button) findViewById(R.id.btnIconTextTabs);
++        btnIconTabs = (Button) findViewById(R.id.btnIconTabs);
++        btnCustomIconTextTabs = (Button) findViewById(R.id.btnCustomIconTabs);
++
++        btnSimpleTabs.setOnClickListener(this);
++        btnScrollableTabs.setOnClickListener(this);
++        btnIconTextTabs.setOnClickListener(this);
++        btnIconTabs.setOnClickListener(this);
++        btnCustomIconTextTabs.setOnClickListener(this);
++
++    }
++
++    @Override
++    public void onClick(View view) {
++        switch (view.getId()) {
++            case R.id.btnSimpleTabs:
++                startActivity(new Intent(TabMainActivity.this, SimpleTabsActivity.class));
++                break;
++            case R.id.btnScrollableTabs:
++                startActivity(new Intent(TabMainActivity.this, ScrollableTabsActivity.class));
++                break;
++            case R.id.btnIconTextTabs:
++                startActivity(new Intent(TabMainActivity.this, IconTextTabsActivity.class));
++                break;
++            case R.id.btnIconTabs:
++                startActivity(new Intent(TabMainActivity.this, IconTabsActivity.class));
++                break;
++            case R.id.btnCustomIconTabs:
++                startActivity(new Intent(TabMainActivity.this, CustomViewIconTextTabsActivity.class));
++                break;
++        }
++    }
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/fragments/EightFragment.java b/app/src/main/java/com/meoscar/app_practice/fragments/EightFragment.java
+new file mode 100755
+index 0000000..a40c0b6
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/fragments/EightFragment.java
+@@ -0,0 +1,30 @@
++package com.meoscar.app_practice.fragments;
++
++import android.os.Bundle;
++import android.support.v4.app.Fragment;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import com.meoscar.app_practice.R;
++
++
++public class EightFragment extends Fragment {
++
++    public EightFragment() {
++        // Required empty public constructor
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        // Inflate the layout for this fragment
++        return inflater.inflate(R.layout.fragment_eight, container, false);
++    }
++
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/fragments/FiveFragment.java b/app/src/main/java/com/meoscar/app_practice/fragments/FiveFragment.java
+new file mode 100755
+index 0000000..15abb52
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/fragments/FiveFragment.java
+@@ -0,0 +1,30 @@
++package com.meoscar.app_practice.fragments;
++
++import android.os.Bundle;
++import android.support.v4.app.Fragment;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import com.meoscar.app_practice.R;
++
++
++public class FiveFragment extends Fragment {
++
++    public FiveFragment() {
++        // Required empty public constructor
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        // Inflate the layout for this fragment
++        return inflater.inflate(R.layout.fragment_five, container, false);
++    }
++
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/fragments/FourFragment.java b/app/src/main/java/com/meoscar/app_practice/fragments/FourFragment.java
+new file mode 100755
+index 0000000..e0e77c7
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/fragments/FourFragment.java
+@@ -0,0 +1,30 @@
++package com.meoscar.app_practice.fragments;
++
++import android.os.Bundle;
++import android.support.v4.app.Fragment;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import com.meoscar.app_practice.R;
++
++
++public class FourFragment extends Fragment {
++
++    public FourFragment() {
++        // Required empty public constructor
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        // Inflate the layout for this fragment
++        return inflater.inflate(R.layout.fragment_four, container, false);
++    }
++
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/fragments/NineFragment.java b/app/src/main/java/com/meoscar/app_practice/fragments/NineFragment.java
+new file mode 100755
+index 0000000..19eacb6
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/fragments/NineFragment.java
+@@ -0,0 +1,30 @@
++package com.meoscar.app_practice.fragments;
++
++import android.os.Bundle;
++import android.support.v4.app.Fragment;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import com.meoscar.app_practice.R;
++
++
++public class NineFragment extends Fragment {
++
++    public NineFragment() {
++        // Required empty public constructor
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        // Inflate the layout for this fragment
++        return inflater.inflate(R.layout.fragment_nine, container, false);
++    }
++
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/fragments/OneFragment.java b/app/src/main/java/com/meoscar/app_practice/fragments/OneFragment.java
+new file mode 100755
+index 0000000..3f6eef1
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/fragments/OneFragment.java
+@@ -0,0 +1,30 @@
++package com.meoscar.app_practice.fragments;
++
++import android.os.Bundle;
++import android.support.v4.app.Fragment;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import com.meoscar.app_practice.R;
++
++
++public class OneFragment extends Fragment {
++
++    public OneFragment() {
++        // Required empty public constructor
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        // Inflate the layout for this fragment
++        return inflater.inflate(R.layout.fragment_one, container, false);
++    }
++
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/fragments/SevenFragment.java b/app/src/main/java/com/meoscar/app_practice/fragments/SevenFragment.java
+new file mode 100755
+index 0000000..ab9cc8a
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/fragments/SevenFragment.java
+@@ -0,0 +1,30 @@
++package com.meoscar.app_practice.fragments;
++
++import android.os.Bundle;
++import android.support.v4.app.Fragment;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import com.meoscar.app_practice.R;
++
++
++public class SevenFragment extends Fragment {
++
++    public SevenFragment() {
++        // Required empty public constructor
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        // Inflate the layout for this fragment
++        return inflater.inflate(R.layout.fragment_seven, container, false);
++    }
++
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/fragments/SixFragment.java b/app/src/main/java/com/meoscar/app_practice/fragments/SixFragment.java
+new file mode 100755
+index 0000000..2099f42
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/fragments/SixFragment.java
+@@ -0,0 +1,30 @@
++package com.meoscar.app_practice.fragments;
++
++import android.os.Bundle;
++import android.support.v4.app.Fragment;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import com.meoscar.app_practice.R;
++
++
++public class SixFragment extends Fragment {
++
++    public SixFragment() {
++        // Required empty public constructor
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        // Inflate the layout for this fragment
++        return inflater.inflate(R.layout.fragment_six, container, false);
++    }
++
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/fragments/TenFragment.java b/app/src/main/java/com/meoscar/app_practice/fragments/TenFragment.java
+new file mode 100755
+index 0000000..af20427
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/fragments/TenFragment.java
+@@ -0,0 +1,30 @@
++package com.meoscar.app_practice.fragments;
++
++import android.os.Bundle;
++import android.support.v4.app.Fragment;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import com.meoscar.app_practice.R;
++
++
++public class TenFragment extends Fragment {
++
++    public TenFragment() {
++        // Required empty public constructor
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        // Inflate the layout for this fragment
++        return inflater.inflate(R.layout.fragment_ten, container, false);
++    }
++
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/fragments/ThreeFragment.java b/app/src/main/java/com/meoscar/app_practice/fragments/ThreeFragment.java
+new file mode 100755
+index 0000000..696b213
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/fragments/ThreeFragment.java
+@@ -0,0 +1,30 @@
++package com.meoscar.app_practice.fragments;
++
++import android.os.Bundle;
++import android.support.v4.app.Fragment;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import com.meoscar.app_practice.R;
++
++
++public class ThreeFragment extends Fragment {
++
++    public ThreeFragment() {
++        // Required empty public constructor
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        // Inflate the layout for this fragment
++        return inflater.inflate(R.layout.fragment_three, container, false);
++    }
++
++}
+diff --git a/app/src/main/java/com/meoscar/app_practice/fragments/TwoFragment.java b/app/src/main/java/com/meoscar/app_practice/fragments/TwoFragment.java
+new file mode 100755
+index 0000000..b55eced
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/fragments/TwoFragment.java
+@@ -0,0 +1,30 @@
++package com.meoscar.app_practice.fragments;
++
++import android.os.Bundle;
++import android.support.v4.app.Fragment;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import com.meoscar.app_practice.R;
++
++
++public class TwoFragment extends Fragment {
++
++    public TwoFragment() {
++        // Required empty public constructor
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        // Inflate the layout for this fragment
++        return inflater.inflate(R.layout.fragment_two, container, false);
++    }
++
++}
+diff --git a/app/src/main/res/drawable-hdpi/ic_tab_call.png b/app/src/main/res/drawable-hdpi/ic_tab_call.png
+new file mode 100755
+index 0000000000000000000000000000000000000000..228c55bcd895101db9bdd305dea34d814e3f8b08
+GIT binary patch
+literal 502
+zcmV<S0SW$zP)<h;3K|Lk000e1NJLTq001xm001xu1^@s6R|5Hm0005KNkl<Zc-rll
+zJxc>Y5Qa~Ug`gld0SP9Jf&2t5QixX3{Dnjj6%j$jk3tZ&S0O0`Tcgn?DHPF0)ItUS
+z)A<hUK{(9qY~apW*ny|Zk$KqLop;akT)A@P%2g8O`~EPfg1VvtMr>(54VvI5L>uI6
+zZ9bp@2BkJX2JRx7515uJu)%1a*pVu5#T2*&DVqhpz_>(#3#I_EAW`7RKww*<z^Z}3
+zvP6M7X7k^mAW>j~`}%->i2^C`q-p*D3`mX=rxDG+f>G&NXjZcVMH^!DON79=4RLy3
+zGllcg1#;jsLZT)z3v~$eX*M%amc9x!6FwpY-b4<wki?p16&^rVvcM3yW=IqyOXR`3
+zMuJ|aa<`35v4bQj0IC==Pxpz$4g&m9Nd-7vMyiF6Sc)BB>yPK@IKELrQ?bgZQ)$WI
+zwni7DBE=4{$9%34>n9r}v1xE$2(pvO?^~1v;+9xszD~VTNn*&A)W(fNpq|vmo@5-c
+zas@i(#ENEOn^OIcS&;!JngGb58S5ry?2Rng1<yS;pO$nfngPe)k<t9UnC82DD9EU*
+sDn*Gya0V_F>-1IJbLGmFD_2R>FYq?um(IDUJpcdz07*qoM6N<$f?7!35dZ)H
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-hdpi/ic_tab_contacts.png b/app/src/main/res/drawable-hdpi/ic_tab_contacts.png
+new file mode 100755
+index 0000000000000000000000000000000000000000..30bb9e7fb578ceaca44dcd51dd43e4487369c487
+GIT binary patch
+literal 605
+zcmV-j0;2tiP)<h;3K|Lk000e1NJLTq001xm001xu1^@s6R|5Hm0006cNkl<Zc-rll
+zJxc>Y5Qc>WE?`2Gv=Ji&jD-?3MGD0q5RgEwQMA-_=7N@{&^n~D*1|?mG-{$%Qb;6C
+z{!^U6u{m;kv%0r;#ST2p-tN0I`*k}zH)qV4F=NJz8T+y6bZP->fDJf6i*Tq6zgbaq
+ze2JXw0}~(mR5u$1$5TKP7%?1oGonCJVL6`%9{=FD8`Q|_cD@7*Jsj!+2S5&(CswGe
+z>(OQaZ0Q_%FXyj;w4iO8>db08416YN&3i4I4`6|zfkC_rmQyOo0GfieT$j)}7U(!Z
+z9+h8$j!TkzNOU@7g9yO!IZcWZT16i%N44`7<0n;-(5v`p^_2dx=?dU?o*zl*9WwL^
+zDg&??9abgustmoF&h?L!CG^S+y@tvFT8s{D#WUK{9Y9AyucJEv&Jr4PHXhcYx>}cz
+z&AeHjFtqASt(xv*6uAT90-ZS3ndm-7EoQcb<ODh!OpTuM)RVanCZc;ieA{PgsK3zB
+zWp3n?S)Brl0*z(h9C+1!ne&*17b;r?ViG#I7uG45x4=#xK|+Js(=L!upqU^oOe-G(
+zPx2|H#LmuSMqQv6qnQ|JOYU)_Qiqp7@*g@$;EJ?1!+KVE0=6ah0FL?&@J!1_@3V?)
+zPv9p01a5#mATui%aymnGZmCTpw1+L1b6E<cNB5k2pbcCQZ7Lg6ooGBQdi=5RvR0$f
+r{e9eRP+1|8kGsZ<88c?gSXlNA1?Wu=o)YxN00000NkvXXu0mjf-Vg<E
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-hdpi/ic_tab_favourite.png b/app/src/main/res/drawable-hdpi/ic_tab_favourite.png
+new file mode 100755
+index 0000000000000000000000000000000000000000..a1e00b3d598505efe4c1c9884e34b2bf59746dad
+GIT binary patch
+literal 515
+zcmV+e0{s1nP)<h;3K|Lk000e1NJLTq001xm001xu1^@s6R|5Hm0005XNkl<Zc-rlm
+zJ4*vW6osQk@lj|IP)r*A11_RsV_{>`E2s!+p`EUXjg4B{Dfj{v1htBSf~ZIW78bh6
+ze_GFl2?W`M-Q>>P73RWMWMC%e?Cdgo&n6PKY}vA9%XIm^p9CXd0jz_0^}9X9+zv1X
+zR)7oEz!c~-A-ol2!6PUK@B$Wt#9*uoEP>Y=b3fDtN$R}nyTGd<pqe`{Ts3z{jg>=i
+zNV~)>z6ETB6i}f69Cd3IBhKBU-R3kf34S7qAU+jQ=as-Tm-set(}0L(xo3GE)Ggo%
+z7@%Dk<uI@zAijdjVc=5Gzy*hacR>Sh90tAx4SaDJC<z+yI1Cg84HP&GTniew;xOO}
+z8rbA8;0Qej^q&sbTj+y;fjrx*H5Qr^FfhycHrfN84T^sP-P}Dv&Y*#;u6FX&fcO*E
+zX6BEHjOK%ly10z)#y+R1KcF>dOeGUL8Vqbx?`<*{I%X7qq%BUVW1=@gR8o&yT1zUS
+zOEq~)(`lQMjv3SH;A!Nr8jMR;nvS>=`PhiBGBKdCoG`Ite_T`RK5$+~{F&GT8^Hvn
+z&<6qH_l-p8jB(_uN;HUN8vBnQLMFht{Ul_|mMvSctzVUR^glGkh!X$+002ovPDHLk
+FV1nqi+vETM
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-mdpi/ic_tab_call.png b/app/src/main/res/drawable-mdpi/ic_tab_call.png
+new file mode 100755
+index 0000000000000000000000000000000000000000..f21b73f03bd4aedcd2c7dc9ab79ef8b2dd1ad1e9
+GIT binary patch
+literal 362
+zcmV-w0hRuVP)<h;3K|Lk000e1NJLTq001BW001Be1^@s6b9#F80003oNkl<Zc-rlk
+zyAA<S5Qc4Bi_Llg5kcbCc>xU-4?(HHBj|VlLPr$zTZt%Dc&GJGGKFl;ImqsgW+(aT
+z|KB-t+e9LcI1J%=UIvta^AGVlaKRJYzzA59;#U@brz0Vr180Rev6L`S)rb=pkdE3w
+z(O`gRMQtDt?gj&cs12kHHShp6i8@$m49rAY5h6o{_*QZbR5;!52IyI`QU)xrS7f0t
+zIf{D<12md#DFaDxQka-a)<Rn|6ULGzrka+V`=5hrr$)5`nxTwsz6sVE6E2HoS$yW}
+z9@-rX+M<CnMqdgJhVe`-y7{m}hCwr78#3_?x4@Sby(yS{SXL%VVRpyyM{%l`OxSax
+z3wB>*gwDHqlw-Th3v9&&dG{4)Lvn=EJ>h@?8_UH%IB}Tb1%D%43zGJgg8%>k07*qo
+IM6N<$g1}pmZ2$lO
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-mdpi/ic_tab_contacts.png b/app/src/main/res/drawable-mdpi/ic_tab_contacts.png
+new file mode 100755
+index 0000000000000000000000000000000000000000..fe1c37ab558fb47c8ac944a3a7cbd2281015cc44
+GIT binary patch
+literal 402
+zcmV;D0d4+?P)<h;3K|Lk000e1NJLTq001BW001Be1^@s6b9#F800045Nkl<Zc-muN
+z7zLwX6p#r1|Nk!z#Nj~P2*lH%xB)6APD_g=fVc&SPXh579QY(ujRdtVw+7;UXqIgS
+z;z>}v6-^GL){2^zA44+y6cC33F$<C!79b9R%E8nfqu3G9U`O|PF&_0rSVBUA5(l(k
+ziDxZ5>NT;bZ=oc$V@q%<c=V{?NSNZ}I3OHHO1HtI#|DR<FmfEwh{G@gJbDap=xHFw
+z0n>08W{gLV5e_|5sp)`RJbLn|>3{|th8;jI1JKHX1JsOya6Cn>1s3&|c+`hcGaG_%
+z3KsQMc<Ki+Y86ClfH(_?WpI=Mpfs=nO;0m5isE)4)&XK>BJ_aLf-Y3gUW#i*P=x}-
+z^MF{G1U<q)JRg)Us8u6^9I+Hy(lO#u#|Xr>P_@*t94$JUfp{)7hiCw?AQXex5m31%
+wsy9fm<c=_CIWZNA8=zuh45MHai~<q?0C>i8*6tXL4gdfE07*qoM6N<$f@NBpH~;_u
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-mdpi/ic_tab_favourite.png b/app/src/main/res/drawable-mdpi/ic_tab_favourite.png
+new file mode 100755
+index 0000000000000000000000000000000000000000..dd7696d9bd46ddb08e708023da087f1d3bfcd927
+GIT binary patch
+literal 344
+zcmV-e0jK_nP)<h;3K|Lk000e1NJLTq001BW001Be1^@s6b9#F80003WNkl<Zc-muN
+z7zLw%2=M>^e<mR20AgkW>R5o78$?sfVjdvQ2I37sd>Dwg0dXx5E1;=U0OAH9-U-Af
+zfOrQGmjSU5C6<c-@hTubg9RT2;vlHHASfT3x{W|AL2i&w$6+Wko<M|}c_c>(P=hrQ
+z29tvANOeFnl^xJRsslDs*#R3!b-)QKJK!j(4md?+2b?6;0h_7pfX$>jpk<&Fp#zm2
+z;6SPaSb=ywl`LNeGLM|n(346I@SvmyoI#=GpyHf~k_t&0i1(3c`CcHFqDGbMKt{Q6
+z5{T`o*&s<E(E;(aXcZL_X?X#ynq|z;Rt`SPODRfpMCObF9G2(P)N(Y3L_-rAEWt$$
+qL`&HL+HSCC7$`us=JzNV(EtFB=UPj!muz(a0000<MNUMnLSTYu)PdIk
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-xhdpi/ic_tab_call.png b/app/src/main/res/drawable-xhdpi/ic_tab_call.png
+new file mode 100755
+index 0000000000000000000000000000000000000000..c3157923a10f442c56641570d840f18b7b6a27c4
+GIT binary patch
+literal 701
+zcmV;u0z&<XP)<h;3K|Lk000e1NJLTq002M$002M;1^@s6s%dfF0007nNkl<Zc-rln
+z%}ZNR5XIw5suZ&jzra#lh_xziq#y<tLhVP4{R7&9-89`vDt1>&sT)yH64a`cuG%is
+z5*N~fEiEC?koZ5PXJ7&$B+Y#{iSId?1HYxwbIiSWX6_9HR4SE9rBbO>?o=w3y1*ca
+zfGC&&y`5tI8rT58zy(tTX|N0&$>zf#Rbjjq2@sTOez$>nA`fEH%y)yNf%!5S+9#x#
+z4}wh>=F8lc62K_PSp@J*N&pWm%o7J9P6R&ZZ36fS1|$TqWElVvkr2RK69KGC2w=R4
+z08S(XFl>1W5QkDKz|&4%0uFtZEzJJ~(^6`IS2q8BF-;MSJalRP9SBKkhWfeZH!=T4
+zl=+Gfz8D4&3rG}<y)X=5M`{4K4C{g4U_@d7G#B`2_$`P_{T4hj4B(s!D5-P7j9~}~
+zF=Mf+5S|(akfr+qi2+;(-wi|fEOjZ+UQjR$VN2XS0SxuHY>?K(RfjM%#p~Q8fC7gQ
+z?9>ghayf)01rRd0E3CCK&NMnAx$v6iw)#Cd1~0)pH)oDtLKp&HU51e5IwAa@VApx5
+zQg7tG4_3j1=k*2;PJdVoO{ijwgBw-m-@5!9D$Zh_?lJh~v*3^A?2vwLn@zm7{ER$r
+zw2qe{EHn{9tB88N9A+(-L#s%8{#=LmgtSKi6n)Wy@ad53$YoHqqd##`F}4bSUCQDQ
+zn&jT0a0%w=_1d5xt44Zfv;xlB9KeRJ2QfTPcnrR^!911a-B)S6MupFZCT^cA*}IaB
+z7GJ*7vH2W)vfL+9V!BKi=>zw;89L%Rzuqa5<0pJQQpfNPFBN*2JqGT8MQ|V71vf=L
+j%T=jVDwRs5YPbFYnC|^6GGe<L00000NkvXXu0mjfpXV;3
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-xhdpi/ic_tab_contacts.png b/app/src/main/res/drawable-xhdpi/ic_tab_contacts.png
+new file mode 100755
+index 0000000000000000000000000000000000000000..770cce8947af0ac80bfbb16add47499231fa1517
+GIT binary patch
+literal 873
+zcmV-v1D5=WP)<h;3K|Lk000e1NJLTq002M$002M;1^@s6s%dfF0009pNkl<Zc-rk+
+z&uddb5RPeSRf=sQVh<j?H1;SedTIRu4Mc5?KMrkrQA$7&!N!&z1U=QWX)B%-dQ(s#
+zXryWMAn2i0|ED+uU*J(}-p+2i*_8R<yCiSt+u66fGdued357zTP$(1%g+ig&Lo^zV
+zByotCA!doQ#3DG0-!gb6xt|;#Am)iH#2WE$4EdQd@dmf;X2*w#3&bA=PVYu;`-E+E
+zlj8?5rRxrk@8l-2z_vqo{wVQP8y%1G4{WDHb^a8wV&KRIahZ6RcniEod||jputp|C
+z=c@+mnH^2Fu#>_war;I!m_fj_k9+gKi01@0&!SD-Oh|{Y;l-`_-^801w)1G)%Jy1E
+zH%9FCaclOyO(&^MKk=Qx#yHc-IByc_9yn;+Hw=-(ofv=x!|-+4LF1C4MyV6&t!aig
+z=Abhs$QTEF4nSUzz)U;nObc|Te4gr71Ra}q(0VM;DSJ6Z;<#E9bnLl<)-!<)XP84i
+z1|TEM;TIjW7KK_PJ_aBw?9_D!t!qN9iBOWCDDOCE-4<#Ud<;NQ*r_E4ttFvWF~kA*
+zK<u;7=|kJ#20*$5wus{vIv3G4xFwLasOGF&=&W1lOoSK)ncI?76{+^Ng^rgnC{2W#
+z%n3Ad7WO$28uXP4mn}NT#fu&T`@O{17WQ9yyHLTUg|vfTiAM}<pS0Ngn3JI%hnxJ~
+zsvsJ%ecti{#qTW=Zfs0D_?h^S%UlL_j}e~=_Zhzhkw{5wvqi1$Bk>V&lz70xeh=|9
+z4n&ohyTs$2stXq2Y_vYdZ|@B8aGRIh1ssp-K@>&*Qx;z~S>tWcOhJn^S521HUUw*s
+zDf*L(m>%@5;L@bxW56ZZVHJarGl}<>d%{&X|HVtzXE6vB#PIoc-q?_>L$J98jj){G
+zu^iSSQDB@iI|qBcI2C?^&DCJ0eayx<gNVRy><yR2uz4j7+9&ZWw|NU2HQ4M=bPJFt
+zlp+~p9cPF+-1u;QZ~`2~Z*zF&TO`9Pbu7-eF@{gUu?@ph9Up8ayZR%kU8Xi4rAN4M
+zfh4N=nOp(C@qdH+>N7coLZMJ76bgkx5hVTrr_qLXlrLfI00000NkvXXu0mjfWF(a2
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-xhdpi/ic_tab_favourite.png b/app/src/main/res/drawable-xhdpi/ic_tab_favourite.png
+new file mode 100755
+index 0000000000000000000000000000000000000000..9f2c034e0e7d20eb1650e5dfa463d4616a71feca
+GIT binary patch
+literal 709
+zcmV;$0y_PPP)<h;3K|Lk000e1NJLTq002M$002M;1^@s6s%dfF0007vNkl<Zc-rln
+zO-md>5QfJcMc8OmFeF~Y&k#Zgi{L>5MiTrA9wdp;Lm+>^V-Dt|0Y#4n6%i$f(SV48
+ziXv!0Wn<Lre_G#yUXVrD9jB|Od$(SAF3VEW^>)wnOjUcHNF)-8L?V$Wywd4(8F&b4
+zKqV;E5RYO#0<|CxN^DI01^5cqzyUZ0dte2Of~WZooc;%%--<`E&cP|z1~cF-@NG!E
+z8T<gLJXi#Y9P!$~Ql9aCgZ3zsf1_q66@b5LMLfug6<5Ds1dK;3V+6!ZC*KK@0S9}V
+zIl8x1tZFbHBGwfcG`;LkLku{>26zU3X^8a?yfl$~Iatsz;0#HPu~z9;;x?cQTx%S(
+zZhASBkAY>2lTWE_)8{gvN%NBBfX3I%Wxz+vlg}{BWx%8(27Ko-V8amu*0~Hgam0Wl
+zE(0zdF(AohK*|yRa~W{%hyiC@25dQEz$TXg(~cN0#bv;VBL;jb_E+IX&X1v0%MJL+
+zS{*|050)FiTN%Oys=&Ub$?wwmOjL!wSZcs$Q#HX#Rr9xP_A5*lMtkX%)0S6X&~3Ub
+z?gwaya5Ec8mk1Yau;3G!8Z-4#c8B^^V<L*=>AHPU_XbPBw}=cF3)_9xWkOt)qfI8y
+z-vkM0LY={_k+!@iHl7hk7<ee280i6qFyZw*THHZe>zytflj&34TAj&LydGE136-cW
+z(uKyEe{bd4pd2O)X(**%Dl^?lKFf%K5G#RZ{+;Kt)Jo`~Qgy)O=>$r*von8(5wF0X
+z09##$S7<^~tzaid@^lWc#Vb_N8=N{kc~|oE`(v-rMU@*ck(K<o(Ta`*CirT5J5-fs
+r-zzq$9ipmWp7bJ-NF)-8M6T%u^&=2W-&u$c00000NkvXXu0mjf{0cWm
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-xxhdpi/ic_tab_call.png b/app/src/main/res/drawable-xxhdpi/ic_tab_call.png
+new file mode 100755
+index 0000000000000000000000000000000000000000..80c87374283518102aca9c4285e40483664b323e
+GIT binary patch
+literal 1148
+zcmV-?1cUpDP)<h;3K|Lk000e1NJLTq003YB003YJ1^@s6;+S_h000C-Nkl<Zc-rk<
+zTT7Ht6xC77TV<A1(nZ45NYE&#haQ!}Qm`BdeCaY-YJ@>bfn|h|M3i7q4?Yy#dyUkx
+z%+Pe4{7=)~um@rom^0r#$C>YQEm+Wl1g_QDXW!0OULF7d0000000000000000H8oT
+z9xo%-5j%)|LjH3tu@nlq6Fx+2CO#wnCaxy&7jayErVxtR6~BPkMqElEd@}iGBE(`S
+zXGi=(Vi$4IK>P%w#GAwoP*5*^m^hz-_zALMXQ84l?40u`eu7_!l~B{$g?lE$u#<{0
+z4qs3-a|2q4D@ySbd`c{Ws^;QX5?@;qpZSBh8OoX)a7?n8Rf{|dWz7xfu`E8bpO_DI
+z%?!BVz<`&;a;R%&z;y=({3O;u-Ry-R<|(LaW<a+i1McA-Ff*Xtkpb_B6;L?60Vf<8
+zFhi_|!s!iYkQRb%1Gpe-gu>|!*e7DyHeiaUW>7f20ae7$4h(pYJHX6<QsRUI18zfI
+zGXwHjEX(50BmQS*LZ?OX|4J_i<H-yRsIw$KXH%o-17&VNIq|y%10G{n$eRH?j2}~m
+zo%;}9XTo_!LH3DQ4Hb0;98e79XSt$=iaG;AQapJLLt&_>HzA@hU=pdP-he}jz7Q|#
+z9)XHF1B!^x6{lbXD(X$>P-H`M#Jx~aXTVNncXSBv1+se?FCit>8?c)=tuTRK&TN8`
+zy4FO$!hone@(4jq?<Q0!-wJ%iOh9kK73IMG6&`Hp45*Mso2E<p1QoK*gf`{N88%^n
+zSOPV@8Bjueq#V@nrF<18csHR|_I$J^3?LkNH{qm(4Z6ggfQ#9K0UL>TMMSL$oE<gV
+zs1qbnsFlC3p138jTiNuBZ6m(5xVjkjQZaKF6T$Du5NS%<=rgjFJuD}-CU6@X@^Ox7
+zOD066ZP8%bz>^J*e#0V>O?g4=<yi&4-VDSOTKXkgl~r=82HsG*R<>kh4-{c=R_>rK
+zU*ALWSpyCq%a&Ifd7d!B&s>wUB@utj(kgvSKC95_+pJ73<%q=>_Q~VTNimr()?Jno
+zfMhO6YFzAB6S!+S=-?zIhmDU8#Q*;uy5!p-lAMG=M<-#e_=ni!=R2WL!qKviO&Is}
+zYNecnF3Z``T5`_!PpTw4YO&Ba$`;#$Qmi!*-#ENDU9m4{ZHr+?PhefKH;4_qR+$g`
+z!GMk+&l4U>;ghT4bMjCZ<aTy3e?dixs$8rY_*-{n>tU|I{rk%~macL$uz9@=c(xO-
+z<-q;G3kRpy<r0}x(AC5X5}IOJi2GbT7GUHVkMEF=$4*#!GHW7!7@ORwPsKsvMHzoC
+zI5-)L@-H9ar!j*c4(=DRMlFp(SLCE2?07gCWnu__X6=@AFh3B#8GL*;D%%(>*xI&R
+zTW~hDN8ULfms%q%A*@IK%N4%l4->aSH2?qr0000000000000004gLX&$Rc_Jb)-uG
+O0000<MNUMnLSTYDr}g{*
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-xxhdpi/ic_tab_contacts.png b/app/src/main/res/drawable-xxhdpi/ic_tab_contacts.png
+new file mode 100755
+index 0000000000000000000000000000000000000000..e4dd982927bc8feb5229f80c6a0a4d2e76a7d1be
+GIT binary patch
+literal 1473
+zcmV;y1wQ(TP)<h;3K|Lk000e1NJLTq003YB003YJ1^@s6;+S_h000GuNkl<Zc-rk;
+zTWeHT6rPNkM3Z=_i4e6yd^5D@L@P~$iqbyWC+k=>2<9Pzm{JuYf@a!KDVnDUj<*!+
+zOM=mgCYrV>w$&CPlZ^i<t_9!F&7p~teb$b9pIIM#5GLpH?X}LnthFzxltQ6UC=?2X
+zLZMJ76bgkxp-?Ck3WY+U@Bs7k^BH0bv5nYH%o2BjS^U<9Ycgsv8G~;ib`krC*NJ1q
+zDdH<)k@yBI;<qVW!`Gg{z3Px98or*mk9dXnhhbz}P7{A1?&W8zg%>t_GqH#GOu*<1
+zaT4!nR*U~<_;tji#0lb@L*th@hj$$zuB~RnuORLu-ioy6%SC?YO=1UYsm2cW1o6-J
+zVE8CmLpQOuT8zJzIOu`lqs$Z6B;EL%QSD0>2I3LXRbq~~o!E+wyBU9H@xN=9qbJr>
+zAZ|*s@$Xm|{{`_ZaVxQ|g7?(n+HZ01Qk`%+aZcc>ZTaOtCU)Ai&wLN@Q#`|_Cag({
+z@iS=iOBPMeR)P1oAsAb#6Y{}#%ou8(uxO9}C4MHTgKN=07CO3v9-?BLZ!^^VUb5i$
+z5b_o}xDV+FIl{eVQRu(faSrtGDCsW?J%u16W)l6iWrTa5*yun{1Mz3eh&dNxVr|kg
+zAiC&KSHGnu&K<1}$pJkv5^KjD>N*x9f!7mKK0i)M`G`YpxtOW!x)2<&FJ?}r&!M)y
+znA-M)5OiIMS;!%W`i5d^8}xd56LYw6rxEYDC?r0Pdjiv&Ej~M-OCT*g=3?B9H29c+
+zzD}PV&?iv9M_iK})y_u(`cC`Y{$Cd;;JAxPbHpa&0{Vu%OwwWfjYJjaNtYT2`f7+j
+z3g{d4vL8U&cS@ju-#FBGMnE5zvCT&Zv}1Kz+yY+kFco2v%h>Lt1F}NPOSm6NJJ6RF
+z>Z4|eJA8D&E}_*4<1X4*^idL>aLGlw+$RU{Y}jrG`gY^liFH6$aD`jHr|rMjO^{S4
+z%=}eyq=98BzX@r3N!*s?VQ85Hg4(_l)aC6kR4NcF^O>MF$q&QZKujtXVREy8t`CJZ
+z4STy@NGQ@Yc`Qy^0_lh2!kYX{#tEjQP2MFo#n974{7G1o*XigMi)Da|aW+oaPxpR;
+zXGrP!-S-KZ3^v3`esMWVEole)5d5B!M8Wq87rHmb4A^~PEq+hRqu}*17G;TbdT0(u
+z1$9gWu`C6JkFzk#4EZ@C{@hZ-D&l!8uq_JoMJH3C0MmaHmW6#tJcrE{838Sg!~?|3
+z#OIcpo)SMug#_%wt>nw&YaYPpA7K%#i}`?B3`^Oumxxa)tfgEN52r!{I>DQZq;#KR
+z&3^ejhx9UPTY-&z`>~L0Vv!v@;ci#LCTMem#%lydhp=fc?SV#i#unmN#1UvTH)v#2
+zp#p{LHVQQ2^JWKZDjA8SLc-ofkG40DDqccrc%_FrR~dmD>l{eT?s;reEudgUIHA!a
+zeN8Za5gKn0SErH$-u#SB(B;mKJHJ*BbZs;iY?ZLDZDT5lfD;Oa6L_`q$M2(^MgO$j
+z*f&=G@{?)&NOP2r%(3<^XTN~<{#0ZRdmwSm&O18hZsRP6IRs;0uyGu|w*l`MH-fMi
+z80}QYaW#=9paV@((TEfHK#zk`{R3vjIOzHk6Fjet2)uyhG}U!r)Bi-wxyX@avslaD
+zkJQ12N>db=2WY@OeD4L~FUG{oETZsS;?D<Kq9fKLi#oZ$)}R6$aug|q@>!wns7d?r
+zzkXahy+BI&WN?YKWp)Ig_p=A%@@b)I#6di>PAy!yBg!Y`@<}JBu^eR7IJkAjh^}Wa
+znwr8j!?>qY4{ntmIhjWn@4#s+JMs56<LKgAwU|PoP$(1%g+ifFC=?2XLZMJ76bgkx
+b;RD_Ru}Vg>%}<n300000NkvXXu0mjf@87@f
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable-xxhdpi/ic_tab_favourite.png b/app/src/main/res/drawable-xxhdpi/ic_tab_favourite.png
+new file mode 100755
+index 0000000000000000000000000000000000000000..57e06db3658f99f9ef557c8ff6ef8394bfba91cc
+GIT binary patch
+literal 1120
+zcmV-m1fTnfP)<h;3K|Lk000e1NJLTq003YB003YJ1^@s6;+S_h000ChNkl<Zc-rlp
+z*-KSX6vj_lSIx>EvMddoL&`LhD6|OaAp)_;D5{63EQ%s}2rO=?6i7W48A(OjAVEcG
+zqeg>S=5+rj`xY!iF4-MC=j>^H@FNhq``qt4!@m2hwLMQH5{X12kw_#Gi9{liNF)-8
+zL;+}ge0&DT0SiC@SPT||JTNohv1jqPOF=PM28zIZ5V76#Tu=$lf!m-9bc46xC3py0
+zKs_52@oC&FumT(dH+kG%@D+RqpFk&Q1$#h#&?iFJ=9BS9*yLD}41qSVD_t|_|FNO>
+z!Eg#={{UA&q3Onx0Xx|E(G(1r3>o)~KPQspxOB$XfG1!i&2fn@eAVQdX#N~<2J}zE
+zfcUdAO84so<1PVL!B3yYr7Q6|J*P~&<wR4w?30DAhH|>M|Knc2k<a=upU0%nYo~{|
+zDFIxX#w{lqzJaQV5ZL@GAFsBlxTEz<2?v)64h3w&1iwKoPb+tWUm=Zqk;c?DfKom?
+zV<ACP$Y%aGtT8F*Y8}m=3vPvIgi1QJdmi9`cJhqDg#hUJR;QEsw5;&J5%VW_4Cd()
+zz*ZmU-KId3fEt~qoiPWA>T>((b~J!)<;xT}fHGbta4~=Zut{|Q2Lkx%Z_;e2UUdMM
+z9X0>&FJsjKv^yR^yXpX5J08Fb)dBQ79>7P{0Sr4Hz<}xiVvaMaI)EX^0~k~tK%e6Q
+z^r{Y^)A0a0R0q)FcmPeR132vPQUrbPgQ^3lbnsok<i)rO)d9=~?;H)F2W0E;P9W-N
+z0FAo55!)VOU5+m3Q=Y=L^<9nyKqZoSI#os-cPxOTy43|0IrK2@NmQk+sxI`bBLSQS
+z89J6H7IEv3)$9M-cFyos&|rB0)G?E(bBQ|rFne$Dy+6m(UEEkVXxq9!6(D;ih`LC?
+z4a)*(HL8yo2fKzZSzAgFS9zuh2ff#Vm-fS2^#Y_AK$ZoSbB**pJX6JcKs+_n{7z$9
+zQ~whHwUDkiuz-u24NKztkxdR_zd=jZbe#J<n?!3T;6lI++<riNOPsgn%#RC!_K&!x
+zc>v8uZqAWH2nD<ijgIEiRs@SY+r_(7J=e^9dZSnDxgvbomEf~3<%M9m=bG@P*MSd;
+z&8L;y63<2PZ-gxhm#=BBy3JP3cv1{un}REWLa%n({J0RRLVPCl@%9R0eq0FUyis0|
+z=F{hI5c8)FqCCK@58jaZ;&S2;$^xjgqe`|?aX0x8)`CYqnNK_Nt`=9*Tei42P4n+M
+zvAhsq2oY|B8cAbSvq{?>4h;(-8=T~hlw^0=J)uSOgk@Jk9q)9WsC2N_>aFM%hLFKM
+zX|JX*pZ;E<W#O!4LFDtpb!<|%Vw>?V&<zWL_NqI@JqZnRzgH6i?HgSvGaZpgBoc{4
+mB9TZW5{X12kw_#mL4N@1k0I<i2g}$10000<MNUMnLSTZI3IRg^
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/layout-land/activity_main.xml b/app/src/main/res/layout-land/activity_main.xml
+index 5d06e3f..5ad7882 100644
+--- a/app/src/main/res/layout-land/activity_main.xml
++++ b/app/src/main/res/layout-land/activity_main.xml
+@@ -84,5 +84,10 @@
+         android:layout_marginEnd="20dp"
+         android:layout_marginTop="104dp"
+         android:text="useUIThreadUpdate" />
+-
++    <Button
++        android:id="@+id/gotoTabDemo"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/useUIThreadUpdate"
++        android:text="TabDemo" />
+ </RelativeLayout>
+diff --git a/app/src/main/res/layout/activity_custom_view_icon_text_tabs.xml b/app/src/main/res/layout/activity_custom_view_icon_text_tabs.xml
+new file mode 100755
+index 0000000..ad07688
+--- /dev/null
++++ b/app/src/main/res/layout/activity_custom_view_icon_text_tabs.xml
+@@ -0,0 +1,32 @@
++<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent">
++
++    <android.support.design.widget.AppBarLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
++
++        <android.support.v7.widget.Toolbar
++            android:id="@+id/toolbar"
++            android:layout_width="match_parent"
++            android:layout_height="?attr/actionBarSize"
++            android:background="?attr/colorPrimary"
++            app:layout_scrollFlags="scroll|enterAlways"
++            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
++
++        <android.support.design.widget.TabLayout
++            android:id="@+id/tabs"
++            android:layout_width="match_parent"
++            android:layout_height="@dimen/custom_tab_layout_height"
++            app:tabMode="fixed"
++            app:tabGravity="fill"/>
++    </android.support.design.widget.AppBarLayout>
++
++    <android.support.v4.view.ViewPager
++        android:id="@+id/viewpager"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
++</android.support.design.widget.CoordinatorLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/activity_icon_tabs.xml b/app/src/main/res/layout/activity_icon_tabs.xml
+new file mode 100755
+index 0000000..bcdd261
+--- /dev/null
++++ b/app/src/main/res/layout/activity_icon_tabs.xml
+@@ -0,0 +1,32 @@
++<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent">
++
++    <android.support.design.widget.AppBarLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
++
++        <android.support.v7.widget.Toolbar
++            android:id="@+id/toolbar"
++            android:layout_width="match_parent"
++            android:layout_height="?attr/actionBarSize"
++            android:background="?attr/colorPrimary"
++            app:layout_scrollFlags="scroll|enterAlways"
++            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
++
++        <android.support.design.widget.TabLayout
++            android:id="@+id/tabs"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            app:tabMode="fixed"
++            app:tabGravity="fill"/>
++    </android.support.design.widget.AppBarLayout>
++
++    <android.support.v4.view.ViewPager
++        android:id="@+id/viewpager"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
++</android.support.design.widget.CoordinatorLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/activity_icon_text_tabs.xml b/app/src/main/res/layout/activity_icon_text_tabs.xml
+new file mode 100755
+index 0000000..e4c7f18
+--- /dev/null
++++ b/app/src/main/res/layout/activity_icon_text_tabs.xml
+@@ -0,0 +1,32 @@
++<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent">
++
++    <android.support.design.widget.AppBarLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
++
++        <android.support.v7.widget.Toolbar
++            android:id="@+id/toolbar"
++            android:layout_width="match_parent"
++            android:layout_height="?attr/actionBarSize"
++            android:background="?attr/colorPrimary"
++            app:layout_scrollFlags="scroll|enterAlways"
++            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
++
++        <android.support.design.widget.TabLayout
++            android:id="@+id/tabs"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            app:tabMode="fixed"
++            app:tabGravity="fill"  />
++    </android.support.design.widget.AppBarLayout>
++
++    <android.support.v4.view.ViewPager
++        android:id="@+id/viewpager"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
++</android.support.design.widget.CoordinatorLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+index 62cd6da..a42beda 100644
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -5,10 +5,24 @@
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     tools:context="com.meoscar.app_practice.MainActivity">
++    <android.support.design.widget.AppBarLayout
++        android:layout_width="match_parent"
++        android:id="@+id/appbarLayout"
++        android:layout_height="wrap_content"
++        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+ 
++        <android.support.v7.widget.Toolbar
++            android:id="@+id/toolbar"
++            android:layout_width="match_parent"
++            android:layout_height="?attr/actionBarSize"
++            android:background="?attr/colorPrimary"
++            app:layout_scrollFlags="scroll|enterAlways"
++            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
++    </android.support.design.widget.AppBarLayout>
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
++        android:layout_below="@+id/appbarLayout"
+         android:visibility="visible"
+         android:id="@+id/handler_practice"
+         android:text="refresh text every second."
+@@ -77,5 +91,10 @@
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/useHandlerUpdate"
+         android:text="useUIThreadUpdate" />
+-
++    <Button
++        android:id="@+id/gotoTabDemo"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/useUIThreadUpdate"
++        android:text="TabDemo" />
+ </RelativeLayout>
+diff --git a/app/src/main/res/layout/activity_scrollable_tabs.xml b/app/src/main/res/layout/activity_scrollable_tabs.xml
+new file mode 100755
+index 0000000..6df9e42
+--- /dev/null
++++ b/app/src/main/res/layout/activity_scrollable_tabs.xml
+@@ -0,0 +1,31 @@
++<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent">
++
++    <android.support.design.widget.AppBarLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
++
++        <android.support.v7.widget.Toolbar
++            android:id="@+id/toolbar"
++            android:layout_width="match_parent"
++            android:layout_height="?attr/actionBarSize"
++            android:background="?attr/colorPrimary"
++            app:layout_scrollFlags="scroll|enterAlways"
++            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
++
++        <android.support.design.widget.TabLayout
++            android:id="@+id/tabs"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            app:tabMode="scrollable"/>
++    </android.support.design.widget.AppBarLayout>
++
++    <android.support.v4.view.ViewPager
++        android:id="@+id/viewpager"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
++</android.support.design.widget.CoordinatorLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/activity_simple_tabs.xml b/app/src/main/res/layout/activity_simple_tabs.xml
+new file mode 100755
+index 0000000..623a9af
+--- /dev/null
++++ b/app/src/main/res/layout/activity_simple_tabs.xml
+@@ -0,0 +1,32 @@
++<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent">
++
++    <android.support.design.widget.AppBarLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
++
++        <android.support.v7.widget.Toolbar
++            android:id="@+id/toolbar"
++            android:layout_width="match_parent"
++            android:layout_height="?attr/actionBarSize"
++            android:background="?attr/colorPrimary"
++            app:layout_scrollFlags="scroll|enterAlways"
++            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
++
++        <android.support.design.widget.TabLayout
++            android:id="@+id/tabs"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            app:tabMode="fixed"
++            app:tabGravity="fill"/>
++    </android.support.design.widget.AppBarLayout>
++
++    <android.support.v4.view.ViewPager
++        android:id="@+id/viewpager"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
++</android.support.design.widget.CoordinatorLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/custom_tab.xml b/app/src/main/res/layout/custom_tab.xml
+new file mode 100755
+index 0000000..0ccfdae
+--- /dev/null
++++ b/app/src/main/res/layout/custom_tab.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="utf-8"?>
++<TextView xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="wrap_content"
++    android:layout_height="wrap_content"
++    android:id="@+id/tab"
++    android:textColor="@color/colorAccent"
++    android:textSize="@dimen/tab_label"
++    android:fontFamily="@string/font_fontFamily_medium"/>
+diff --git a/app/src/main/res/layout/fragment_eight.xml b/app/src/main/res/layout/fragment_eight.xml
+new file mode 100755
+index 0000000..425d64b
+--- /dev/null
++++ b/app/src/main/res/layout/fragment_eight.xml
+@@ -0,0 +1,15 @@
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="info.androidhive.materialtabs.fragments.EightFragment">
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@string/eight"
++        android:textSize="40dp"
++        android:textStyle="bold"
++        android:layout_centerInParent="true"/>
++
++</RelativeLayout>
+diff --git a/app/src/main/res/layout/fragment_five.xml b/app/src/main/res/layout/fragment_five.xml
+new file mode 100755
+index 0000000..4efd504
+--- /dev/null
++++ b/app/src/main/res/layout/fragment_five.xml
+@@ -0,0 +1,15 @@
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="info.androidhive.materialtabs.fragments.FiveFragment">
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@string/five"
++        android:textSize="40dp"
++        android:textStyle="bold"
++        android:layout_centerInParent="true"/>
++
++</RelativeLayout>
+diff --git a/app/src/main/res/layout/fragment_four.xml b/app/src/main/res/layout/fragment_four.xml
+new file mode 100755
+index 0000000..23bfa8b
+--- /dev/null
++++ b/app/src/main/res/layout/fragment_four.xml
+@@ -0,0 +1,15 @@
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="info.androidhive.materialtabs.fragments.FourFragment">
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@string/four"
++        android:textSize="40dp"
++        android:textStyle="bold"
++        android:layout_centerInParent="true"/>
++
++</RelativeLayout>
+diff --git a/app/src/main/res/layout/fragment_list.xml b/app/src/main/res/layout/fragment_list.xml
+new file mode 100755
+index 0000000..0f953d5
+--- /dev/null
++++ b/app/src/main/res/layout/fragment_list.xml
+@@ -0,0 +1,12 @@
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="info.androidhive.materialtabs.fragments.ListFragment">
++
++    <android.support.v7.widget.RecyclerView
++        android:id="@+id/recycleView"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent" />
++
++</RelativeLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/fragment_nine.xml b/app/src/main/res/layout/fragment_nine.xml
+new file mode 100755
+index 0000000..32dc847
+--- /dev/null
++++ b/app/src/main/res/layout/fragment_nine.xml
+@@ -0,0 +1,15 @@
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="info.androidhive.materialtabs.fragments.NineFragment">
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@string/nine"
++        android:textSize="40dp"
++        android:textStyle="bold"
++        android:layout_centerInParent="true"/>
++
++</RelativeLayout>
+diff --git a/app/src/main/res/layout/fragment_one.xml b/app/src/main/res/layout/fragment_one.xml
+new file mode 100755
+index 0000000..a01ee76
+--- /dev/null
++++ b/app/src/main/res/layout/fragment_one.xml
+@@ -0,0 +1,15 @@
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="info.androidhive.materialtabs.fragments.OneFragment">
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@string/one"
++        android:textSize="40dp"
++        android:textStyle="bold"
++        android:layout_centerInParent="true"/>
++
++</RelativeLayout>
+diff --git a/app/src/main/res/layout/fragment_seven.xml b/app/src/main/res/layout/fragment_seven.xml
+new file mode 100755
+index 0000000..7123f2f
+--- /dev/null
++++ b/app/src/main/res/layout/fragment_seven.xml
+@@ -0,0 +1,15 @@
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="info.androidhive.materialtabs.fragments.SevenFragment">
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@string/seven"
++        android:textSize="40dp"
++        android:textStyle="bold"
++        android:layout_centerInParent="true"/>
++
++</RelativeLayout>
+diff --git a/app/src/main/res/layout/fragment_six.xml b/app/src/main/res/layout/fragment_six.xml
+new file mode 100755
+index 0000000..8e433b6
+--- /dev/null
++++ b/app/src/main/res/layout/fragment_six.xml
+@@ -0,0 +1,15 @@
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="info.androidhive.materialtabs.fragments.SixFragment">
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@string/six"
++        android:textSize="40dp"
++        android:textStyle="bold"
++        android:layout_centerInParent="true"/>
++
++</RelativeLayout>
+diff --git a/app/src/main/res/layout/fragment_ten.xml b/app/src/main/res/layout/fragment_ten.xml
+new file mode 100755
+index 0000000..53620e5
+--- /dev/null
++++ b/app/src/main/res/layout/fragment_ten.xml
+@@ -0,0 +1,15 @@
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="info.androidhive.materialtabs.fragments.TenFragment">
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@string/ten"
++        android:textSize="40dp"
++        android:textStyle="bold"
++        android:layout_centerInParent="true"/>
++
++</RelativeLayout>
+diff --git a/app/src/main/res/layout/fragment_three.xml b/app/src/main/res/layout/fragment_three.xml
+new file mode 100755
+index 0000000..fcc90ed
+--- /dev/null
++++ b/app/src/main/res/layout/fragment_three.xml
+@@ -0,0 +1,15 @@
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="info.androidhive.materialtabs.fragments.ThreeFragment">
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@string/three"
++        android:textSize="40dp"
++        android:textStyle="bold"
++        android:layout_centerInParent="true"/>
++
++</RelativeLayout>
+diff --git a/app/src/main/res/layout/fragment_two.xml b/app/src/main/res/layout/fragment_two.xml
+new file mode 100755
+index 0000000..6ee595d
+--- /dev/null
++++ b/app/src/main/res/layout/fragment_two.xml
+@@ -0,0 +1,15 @@
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="info.androidhive.materialtabs.fragments.TwoFragment">
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_centerInParent="true"
++        android:text="@string/two"
++        android:textSize="40dp"
++        android:textStyle="bold" />
++
++</RelativeLayout>
+diff --git a/app/src/main/res/layout/tab_main_layout.xml b/app/src/main/res/layout/tab_main_layout.xml
+new file mode 100644
+index 0000000..839442d
+--- /dev/null
++++ b/app/src/main/res/layout/tab_main_layout.xml
+@@ -0,0 +1,64 @@
++<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent">
++
++    <android.support.design.widget.AppBarLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
++
++        <android.support.v7.widget.Toolbar
++            android:id="@+id/toolbar"
++            android:layout_width="match_parent"
++            android:layout_height="?attr/actionBarSize"
++            android:background="?attr/colorPrimary"
++            app:layout_scrollFlags="scroll|enterAlways"
++            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
++    </android.support.design.widget.AppBarLayout>
++
++    <LinearLayout
++        android:layout_width="fill_parent"
++        android:layout_height="match_parent"
++        android:layout_marginTop="?attr/actionBarSize"
++        android:orientation="vertical">
++
++        <Button
++            android:id="@+id/btnSimpleTabs"
++            android:layout_width="fill_parent"
++            android:layout_height="wrap_content"
++            android:text="@string/btn_simple_tabs"
++            android:textSize="15dp" />
++
++        <Button
++            android:id="@+id/btnScrollableTabs"
++            android:layout_width="fill_parent"
++            android:layout_height="wrap_content"
++            android:text="@string/btn_scrollable_tabs"
++            android:textSize="15dp" />
++
++        <Button
++            android:id="@+id/btnIconTextTabs"
++            android:layout_width="fill_parent"
++            android:layout_height="wrap_content"
++            android:text="@string/btn_icon_text_tabs"
++            android:textSize="15dp" />
++
++        <Button
++            android:id="@+id/btnIconTabs"
++            android:layout_width="fill_parent"
++            android:layout_height="wrap_content"
++            android:text="@string/btn_icon_tabs"
++            android:textSize="15dp" />
++
++        <Button
++            android:id="@+id/btnCustomIconTabs"
++            android:layout_width="fill_parent"
++            android:layout_height="wrap_content"
++            android:text="@string/btn_custom_icon_tabs"
++            android:textSize="15dp" />
++
++    </LinearLayout>
++
++
++</android.support.design.widget.CoordinatorLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/values/dimens.xml b/app/src/main/res/values/dimens.xml
+new file mode 100755
+index 0000000..152a8a0
+--- /dev/null
++++ b/app/src/main/res/values/dimens.xml
+@@ -0,0 +1,9 @@
++<resources>
++    <!-- Default screen margins, per the Android Design guidelines. -->
++    <dimen name="activity_horizontal_margin">16dp</dimen>
++    <dimen name="activity_vertical_margin">16dp</dimen>
++    <dimen name="tab_max_width">264dp</dimen>
++    <dimen name="tab_padding_bottom">16dp</dimen>
++    <dimen name="tab_label">14sp</dimen>
++    <dimen name="custom_tab_layout_height">72dp</dimen>
++</resources>
+diff --git a/app/src/main/res/values/fonts.xml b/app/src/main/res/values/fonts.xml
+new file mode 100755
+index 0000000..cf1294a
+--- /dev/null
++++ b/app/src/main/res/values/fonts.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="font_fontFamily_medium">sans-serif</string>
++</resources>
+\ No newline at end of file
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index e9526f3..328635b 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -1,3 +1,26 @@
+ <resources>
+     <string name="app_name">app_practice</string>
++    <string name="one">ONE</string>
++    <string name="eight">EIGHT</string>
++    <string name="five">FIVE</string>
++    <string name="four">FOUR</string>
++    <string name="nine">NINE</string>
++    <string name="seven">SEVEN</string>
++    <string name="six">SIX</string>
++    <string name="ten">TEN</string>
++    <string name="three">THREE</string>
++    <string name="two">TWO</string>
++    <string name="title_activity_scrollable_tabs">Scrollable Tabs</string>
++    <string name="title_activity_simple_tabs">Simple Tabs</string>
++    <string name="btn_simple_tabs">Simple Tabs</string>
++    <string name="btn_scrollable_tabs">Scrollable Tabs</string>
++    <string name="btn_icon_text_tabs">Icon &amp; Text Tabs</string>
++    <string name="btn_icon_tabs">Only Icon Tabs</string>
++    <string name="btn_pinned_top_tabs">Pinned To Top Tabs</string>
++    <string name="title_activity_icon_text_tabs">Icon and Text Tabs</string>
++    <string name="title_activity_icon_tabs">Icon Tabs</string>
++    <string name="btn_custom_icon_tabs">Custom View Icon &amp; Text</string>
++    <string name="title_activity_custom_view_icon_text_tabs">Custom View Icon &amp; Text</string>
++    <string name="title_activity_pinned_top_tabs">Pin Top Tabs</string>
++    <string name="title_activity_main2">Main2Activity</string>
+ </resources>
+diff --git a/app/src/main/res/values/styles.xml b/app/src/main/res/values/styles.xml
+index 5885930..670ce6d 100644
+--- a/app/src/main/res/values/styles.xml
++++ b/app/src/main/res/values/styles.xml
+@@ -7,5 +7,15 @@
+         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+         <item name="colorAccent">@color/colorAccent</item>
+     </style>
++    <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
+ 
++    </style>
++
++    <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
++        <item name="windowNoTitle">true</item>
++        <item name="windowActionBar">false</item>
++        <item name="colorPrimary">@color/colorPrimary</item>
++        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
++        <item name="colorAccent">@color/colorAccent</item>
++    </style>
+ </resources>
+-- 
+2.14.2
+

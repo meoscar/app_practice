@@ -1,0 +1,233 @@
+From b3f33652dd060814dfbc6284efeacffcc80cb3f8 Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Thu, 14 Jun 2018 18:52:09 +0800
+Subject: [PATCH 12/13] Create foreground service
+
+---
+ app/build.gradle                                   |  4 +-
+ app/src/main/AndroidManifest.xml                   |  6 ++
+ .../com/meoscar/app_practice/MainActivity.java     | 24 +++++-
+ .../java/com/meoscar/app_practice/TestService.java | 89 ++++++++++++++++++++++
+ app/src/main/res/layout/activity_main.xml          | 14 ++++
+ 5 files changed, 133 insertions(+), 4 deletions(-)
+ create mode 100644 app/src/main/java/com/meoscar/app_practice/TestService.java
+
+diff --git a/app/build.gradle b/app/build.gradle
+index 5a09f81..dadd005 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -4,8 +4,8 @@ android {
+     compileSdkVersion 26
+     defaultConfig {
+         applicationId "com.meoscar.app_practice"
+-        minSdkVersion 23
+-        targetSdkVersion 26
++        minSdkVersion 21
++        targetSdkVersion 25
+         versionCode 1
+         versionName "1.0"
+         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index 02ca4a3..de1b719 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -65,6 +65,12 @@
+             android:label="@string/title_activity_scrollable_tabs"
+             android:parentActivityName="MainActivity" >
+         </activity>
++
++        <service android:name=".TestService">
++            <intent-filter>
++                <action android:name="meoscar.is.cool" />
++            </intent-filter>
++        </service>
+     </application>
+ 
+ </manifest>
+\ No newline at end of file
+diff --git a/app/src/main/java/com/meoscar/app_practice/MainActivity.java b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+index 59bd594..004b6cb 100644
+--- a/app/src/main/java/com/meoscar/app_practice/MainActivity.java
++++ b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+@@ -1,5 +1,6 @@
+ package com.meoscar.app_practice;
+ 
++import android.content.Context;
+ import android.content.Intent;
+ import android.content.IntentFilter;
+ import android.graphics.Color;
+@@ -24,10 +25,11 @@ public class MainActivity extends AppCompatActivity {
+     private static boolean leaveActivity = false;
+     private static int count = 0;
+ 
+-    private static Button mButton1, mButton2, mButton3, mButton4, mButton5, mButton6;
++    private static Button mButton1, mButton2, mButton3, mButton4, mButton5, mButton6, mButton7, mButton8;
+ 
+     private static MyUIHandler handler;
+     private static Looper uiLooper;
++    private static Context mContext;
+ 
+     private static class MyUIHandler extends Handler {
+         private final WeakReference<MainActivity> mActivity;
+@@ -135,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_main);
+-
++        mContext = getApplicationContext();
+ 
+         handler = new MyUIHandler(this);
+         uiLooper = handler.getLooper();
+@@ -175,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
+         mButton4 = (Button) findViewById(R.id.uiUpdateTestReset);
+         mButton5 = (Button) findViewById(R.id.gotoTabDemo);
+         mButton6 = (Button) findViewById(R.id.gotoSwipeDemo);
++        mButton7 = (Button) findViewById(R.id.startforegroundService);
++        mButton8 = (Button) findViewById(R.id.stopforegroundService);
+ 
+         mButton1.setOnClickListener(new View.OnClickListener() {
+             @Override
+@@ -226,6 +230,22 @@ public class MainActivity extends AppCompatActivity {
+                 startActivity(intent);
+             }
+         });
++
++        mButton7.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                Intent intent = new Intent(mContext, TestService.class);
++                intent.setAction("meoscar.is.cool");
++                mContext.startService(intent);
++            }
++        });
++        mButton8.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                Intent intent = new Intent(mContext, TestService.class);
++                mContext.stopService(intent);
++            }
++        });
+     }
+ 
+     private void useHandlerUpdateUI(){
+diff --git a/app/src/main/java/com/meoscar/app_practice/TestService.java b/app/src/main/java/com/meoscar/app_practice/TestService.java
+new file mode 100644
+index 0000000..0ab5e0a
+--- /dev/null
++++ b/app/src/main/java/com/meoscar/app_practice/TestService.java
+@@ -0,0 +1,89 @@
++package com.meoscar.app_practice;
++
++import android.app.Notification;
++import android.app.NotificationChannel;
++import android.app.NotificationManager;
++import android.app.PendingIntent;
++import android.app.Service;
++import android.content.Context;
++import android.content.Intent;
++import android.graphics.Bitmap;
++import android.graphics.BitmapFactory;
++import android.graphics.Color;
++import android.os.IBinder;
++import android.support.v4.app.NotificationCompat;
++import android.util.Log;
++
++import java.util.Timer;
++import java.util.TimerTask;
++
++public class TestService extends Service {
++    private static final String TAG = "app_practice->Service";
++    private Timer timer;
++    private static int count = 0;
++    private static Context context;
++
++    @Override
++    public IBinder onBind(Intent intent) {
++        return null;
++    }
++
++    private static PendingIntent createPendingRadioDialog(Context context) {
++        Intent myIntent = new Intent(context, MainActivity.class);
++        return PendingIntent.getActivity(context, 0, myIntent, Intent.FILL_IN_ACTION);
++    }
++
++    @Override
++    public void onCreate() {
++        super.onCreate();
++        Log.d(TAG, "onCreate +++");
++        context = getApplicationContext();
++
++        NotificationManager manager = (NotificationManager) context
++                .getSystemService(Context.NOTIFICATION_SERVICE);
++        Notification notification = new NotificationCompat.Builder(context)
++                .setContentIntent(createPendingRadioDialog(context))
++                .setContentTitle("forground service test")
++                .setSmallIcon(R.drawable.android_logo)
++                .setWhen(System.currentTimeMillis())
++                .setContentText("")
++                .build();
++
++        notification.flags |= Notification.FLAG_NO_CLEAR;
++        startForeground(1, notification);
++    }
++
++    @Override
++    public int onStartCommand(Intent intent, int flags, int startId) {
++        if ("meoscar.is.cool".equals(intent.getAction())) {
++            Log.d(TAG, "meoscar.is.cool");
++            if (timer == null) {
++                timer = new Timer();
++                timer.scheduleAtFixedRate(new RefreshTask(), 0, 3000);
++            }
++        }
++        return START_NOT_STICKY;
++    }
++
++    @Override
++    public void onDestroy() {
++        super.onDestroy();
++        Log.d(TAG, "onDestroy +++");
++        try {
++            timer.cancel();
++            timer = null;
++        } catch (Exception e) {
++            e.printStackTrace();
++        }
++        count = 0;
++        stopForeground(true);
++    }
++
++    class RefreshTask extends TimerTask {
++        @Override
++        public void run() {
++            Log.d(TAG, "RefreshTask : Service ha been running for : " + count + " Sec");
++            count += 3;
++        }
++    }
++}
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+index 4cec6fd..90ebfc0 100644
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -103,4 +103,18 @@
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/gotoTabDemo"
+         android:text="SwipeDemo" />
++
++    <Button
++        android:id="@+id/startforegroundService"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/gotoSwipeDemo"
++        android:text="startforegroundService" />
++
++    <Button
++        android:id="@+id/stopforegroundService"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/startforegroundService"
++        android:text="stopforegroundService" />
+ </RelativeLayout>
+-- 
+2.14.2
+

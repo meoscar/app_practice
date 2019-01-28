@@ -1,0 +1,70 @@
+From a6684478a7cc573c3840defd5c5afa72908f67de Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Wed, 2 May 2018 12:12:14 +0800
+Subject: [PATCH 06/13] Remove Toast notification and don't create another icon
+ on launcher
+
+---
+ app/src/main/AndroidManifest.xml                                  | 8 ++++----
+ app/src/main/java/com/meoscar/app_practice/ListFruitActivity.java | 3 +--
+ .../main/java/com/meoscar/app_practice/ListMobileActivity.java    | 4 ++--
+ 3 files changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index 84c5e08..3ac0319 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -19,10 +19,10 @@
+         <activity
+             android:label="List of Mobile OS"
+             android:name=".ListMobileActivity" >
+-            <intent-filter >
+-                <action android:name="android.intent.action.MAIN" />
+-                <category android:name="android.intent.category.LAUNCHER" />
+-            </intent-filter>
++            <!--<intent-filter >-->
++                <!--<action android:name="android.intent.action.MAIN" />-->
++                <!--<category android:name="android.intent.category.LAUNCHER" />-->
++            <!--</intent-filter>-->
+         </activity>
+         <activity
+             android:label="List of Fruits"
+diff --git a/app/src/main/java/com/meoscar/app_practice/ListFruitActivity.java b/app/src/main/java/com/meoscar/app_practice/ListFruitActivity.java
+index 371a574..d87ccb7 100755
+--- a/app/src/main/java/com/meoscar/app_practice/ListFruitActivity.java
++++ b/app/src/main/java/com/meoscar/app_practice/ListFruitActivity.java
+@@ -33,8 +33,7 @@ public class ListFruitActivity extends ListActivity {
+ 			public void onItemClick(AdapterView<?> parent, View view,
+ 					int position, long id) {
+ 				// When clicked, show a toast with the TextView text
+-				Toast.makeText(getApplicationContext(),
+-						((TextView) view).getText(), Toast.LENGTH_SHORT).show();
++				//Toast.makeText(getApplicationContext(),((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+ 			}
+ 		});
+ 
+diff --git a/app/src/main/java/com/meoscar/app_practice/ListMobileActivity.java b/app/src/main/java/com/meoscar/app_practice/ListMobileActivity.java
+index 4c78593..2dcb819 100755
+--- a/app/src/main/java/com/meoscar/app_practice/ListMobileActivity.java
++++ b/app/src/main/java/com/meoscar/app_practice/ListMobileActivity.java
+@@ -23,7 +23,7 @@ public class ListMobileActivity extends ListActivity {
+ 		//		R.id.label, MOBILE_OS));
+ 		
+ 		setListAdapter(new MobileArrayAdapter(this, MOBILE_OS));
+-		
++
+ 
+ 	}
+ 
+@@ -32,7 +32,7 @@ public class ListMobileActivity extends ListActivity {
+ 
+ 		//get selected items
+ 		String selectedValue = (String) getListAdapter().getItem(position);
+-		Toast.makeText(this, selectedValue, Toast.LENGTH_SHORT).show();
++		//Toast.makeText(this, selectedValue, Toast.LENGTH_SHORT).show();
+ 
+ 	}
+ 
+-- 
+2.14.2
+

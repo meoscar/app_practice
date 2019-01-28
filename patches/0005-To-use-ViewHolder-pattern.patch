@@ -1,0 +1,68 @@
+From 563be226d632f4ada0a51c35e2e766b2ee2d888b Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Wed, 2 May 2018 11:19:57 +0800
+Subject: [PATCH 05/13] To use ViewHolder pattern
+
+1. Reuses the convertView passed to getView() to avoid inflating View when it is not necessary
+2. Uses the ViewHolder pattern to avoid calling findViewById() when it is not necessary.
+---
+ .../app_practice/adaptor/MobileArrayAdapter.java   | 29 ++++++++++++++--------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
+
+diff --git a/app/src/main/java/com/meoscar/app_practice/adaptor/MobileArrayAdapter.java b/app/src/main/java/com/meoscar/app_practice/adaptor/MobileArrayAdapter.java
+index a2f3d48..668197f 100755
+--- a/app/src/main/java/com/meoscar/app_practice/adaptor/MobileArrayAdapter.java
++++ b/app/src/main/java/com/meoscar/app_practice/adaptor/MobileArrayAdapter.java
+@@ -20,31 +20,38 @@ public class MobileArrayAdapter extends ArrayAdapter<String> {
+         this.values = values;
+     }
+ 
++    private static class ViewHolder {
++        public ImageView img;
++        public TextView txt;
++    }
++
+     @Override
+     public View getView(int position, View convertView, ViewGroup parent) {
+-
+-        if (convertView == null); {
++        ViewHolder holder;
++        if (convertView == null) {
++            holder = new ViewHolder();
+             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+             convertView =  inflater.inflate(R.layout.list_mobile, parent, false);
++            holder.txt = (TextView) convertView.findViewById(R.id.label);
++            holder.img = (ImageView) convertView.findViewById(R.id.logo);
++            convertView.setTag(holder);
++        } else {
++            holder = (ViewHolder) convertView.getTag();
+         }
+ 
+-        //invoke findViewById every time
+-        TextView textView = (TextView) convertView.findViewById(R.id.label);
+-        ImageView imageView = (ImageView) convertView.findViewById(R.id.logo);
+-
+-        textView.setText(values[position]);
++        holder.txt.setText(values[position]);
+ 
+         // Change icon based on name
+         String s = values[position];
+         System.out.println(s);
+         if (s.equals("WindowsMobile")) {
+-            imageView.setImageResource(R.drawable.windowsmobile_logo);
++            holder.img.setImageResource(R.drawable.windowsmobile_logo);
+         } else if (s.equals("iOS")) {
+-            imageView.setImageResource(R.drawable.ios_logo);
++            holder.img.setImageResource(R.drawable.ios_logo);
+         } else if (s.equals("Blackberry")) {
+-            imageView.setImageResource(R.drawable.blackberry_logo);
++            holder.img.setImageResource(R.drawable.blackberry_logo);
+         } else {
+-            imageView.setImageResource(R.drawable.android_logo);
++            holder.img.setImageResource(R.drawable.android_logo);
+         }
+ 
+         return convertView;
+-- 
+2.14.2
+

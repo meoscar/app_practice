@@ -1,0 +1,150 @@
+From 9a4c45e699c219d1df416d850d57dcc29c024a5c Mon Sep 17 00:00:00 2001
+From: Meoscar_Wei <Meoscar_Wei@asus.com>
+Date: Thu, 19 Apr 2018 17:38:11 +0800
+Subject: [PATCH 01/13] ui handler practice
+
+---
+ .../com/meoscar/app_practice/MainActivity.java     | 100 +++++++++++++++++++++
+ app/src/main/res/layout/activity_main.xml          |  10 +++
+ 2 files changed, 110 insertions(+)
+
+diff --git a/app/src/main/java/com/meoscar/app_practice/MainActivity.java b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+index 4e5ec9d..855b06d 100644
+--- a/app/src/main/java/com/meoscar/app_practice/MainActivity.java
++++ b/app/src/main/java/com/meoscar/app_practice/MainActivity.java
+@@ -1,13 +1,113 @@
+ package com.meoscar.app_practice;
+ 
++import android.graphics.Color;
++import android.os.Handler;
++import android.os.Message;
+ import android.support.v7.app.AppCompatActivity;
+ import android.os.Bundle;
++import android.util.Log;
++import android.widget.TextView;
++
++import java.lang.ref.WeakReference;
++import java.net.MalformedURLException;
+ 
+ public class MainActivity extends AppCompatActivity {
++    private static final String TAG = "app_practice->Main";
++    private static boolean leaveActivity = false;
++    private static int count = 0;
++
++    private static MyUIHandler handler;
++    private static class MyUIHandler extends Handler {
++        private final WeakReference<MainActivity> mActivity;
++
++        public MyUIHandler(MainActivity activity) {
++            mActivity = new WeakReference<MainActivity>(activity);
++        }
++
++        @Override
++        public void handleMessage(Message msg) {
++            // check if this weak reference obj has been GCed or not?
++            MainActivity activity = mActivity.get();
++
++            if(msg.what == 0x5566) {
++                activity.refreshTest();
++            }
++
++        }
++    };
++
++    private void refreshTest() {
++        TextView tv = (TextView) findViewById(R.id.handler_practice);
++        tv.setText("Count : " + count);
++    }
+ 
++    //start +++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_main);
++
++        handler = new MyUIHandler(this);
++    }
++
++    @Override
++    protected void onStart() {
++        Log.d(TAG, "onStart");
++        leaveActivity = false;
++        super.onStart();
++        new Thread(new Runnable() {
++            @Override
++            public void run() {
++                Log.d(TAG, "leaveActivity = " + leaveActivity);
++                while (!leaveActivity) {
++                    try {
++                        //deal with :
++                        count++;
++                        handler.sendEmptyMessage(0X5566);
++                        Thread.sleep(1000);
++                    } catch (InterruptedException e) {
++                        e.printStackTrace();
++                    }
++                }
++            }
++        }).start();
++    }
++
++    @Override
++    protected void onResume() {
++        super.onResume();
++        Log.d(TAG, "onResume");
++        leaveActivity = false;
++    }
++
++    @Override
++    protected void onRestart() {
++        super.onRestart();
++        Log.d(TAG, "onRestart");
++        leaveActivity = false;
++    }
++    //start ---
++
++    //stop +++
++    @Override
++    protected void onPause() {
++        super.onPause();
++        Log.d(TAG, "onPause");
++        //leaveActivity =true;
++    }
++
++    @Override
++    protected void onStop() {
++        super.onStop();
++        Log.d(TAG, "onStop");
++        leaveActivity = true;
++    }
++
++    @Override
++    protected void onDestroy() {
++        super.onDestroy();
++        Log.d(TAG, "onDestory");
++        leaveActivity = true;
+     }
++    //stop ---
+ }
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+index 8c32598..f06cc42 100644
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -15,4 +15,14 @@
+         app:layout_constraintRight_toRightOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+ 
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:visibility="visible"
++        android:id="@+id/handler_practice"
++        android:text="refresh text every second."
++        android:gravity="left"
++        android:textColor="#000000"
++        android:fontFamily="Roboto Regular"/>
++
+ </android.support.constraint.ConstraintLayout>
+-- 
+2.14.2
+
